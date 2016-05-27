@@ -1,0 +1,13 @@
+echo "\n\n\n\n\n"
+banner term listing
+date
+echo "\f\c"
+pr -f -n \
+bootrom.s \
+bram.c \
+link.c \
+lowmem.c \
+pcbs.c \
+selftest.c \
+vector.s \
+vitty.c

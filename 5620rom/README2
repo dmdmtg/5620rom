@@ -1,0 +1,20 @@
+
+WARNING!!
+
+This is a hybred tape and not the official firmware source.
+The main reason for this is that firmware was developed under
+a different SGS than one supplied on the host tape. The main
+difference is that a NOP needed to be added after every
+assembler command that explicitly changes the psw register.
+
+Another change was done to this tape to keep the protocol
+routines proprietary. This meant splitting some files in half
+and supplying only the binary for some of them. Those object
+files have been replaced with their source counterpart on
+this tape.
+
+For the above reasons, any ROMs made from this tape will
+not match those officially released. This will affect only
+rom dependent programs. All programs supplied on the host
+tape will still work.
+

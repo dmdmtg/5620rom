@@ -1,0 +1,304 @@
+.H 1 "Overview"
+.P
+The following is a description of layersys, the windowing
+environment of the 5620 terminal.
+It describes the internal software architecture and
+numerous implementation details.
+.H 2 "Terminology"
+.VL 10 2
+.LI "\fIlayersys\fR"
+is the name of the terminal side of the windowing environment.  The corresponding
+host side is called "\fIlayers\fR."
+.LI "\fIlayer process\fR"
+Each layer has a process
+running for it that controls: (a) what is displayed in the layer and (b) handling of characters sent on the layer channel by the
+host.  It also may control (a) what is sent
+on the layer channel (b) handling of characters typed on the keyboard when the 
+layer is current (c) response to mouse button pushes when the layer is current.
+If the layer process does not arrange to handle these three, \fIlayersys\fR does
+so on the processes' behalf.  The layer processes are scheduled round-robin by
+a small scheduler considered part of \fIlayersys\fR.
+.LI "\fIwindowproc\fR"
+is the 'default layer process' for \fIlayersys\fR.  When a new layer is created,
+a copy of windowproc is started as the layer process by \fIlayersys\fR.
+.LI "\fIlayer channel\fR"
+The multiplexing protocol provides eight full-duplex virtual circuits on the RS-232
+communications line.  These  channels are numbered 0,...,7.  Channels 0 and 1 are
+reserved for use by \fIlayersys\fR.   Channels 2,...,7 are one-to-one with the
+layers.
+.LI "\fIcurrent layer\fR"
+At any point, exactly one layer is 'current.'  The 'current layer' is selected by
+the user or a remote host application program.  It receives keyboard input if it
+has "requested" the keyboard (through the 'request' system call).  It also may poll
+the mouse data structure if it  has "requested" the mouse.  The current layer is
+indicated on the screen with a distinctive layer border.
+.LE
+.H 2 "How \fIlayersys\fB Is Structured\fR"
+.I layersys
+divides into roughly five pieces:
+.AL a
+.LI
+Interrupt handlers for the keyboard, clock\*F, and RS-232 line.
+.FS
+For reasons explained later, the mouse is handled by the clock interrupt routine.
+.FE
+.LI
+The multiplexing line protocol modules, including "demux" (process 0) which
+depacketizes input characters and distributes them to the appropriate layer process
+queue.
+.LI
+.I control ,
+the user interface, which runs as process 1.  "control" handles mouse button 
+pushes if the current process has not requested the mouse.  It presents the 
+user command menu.
+.LI
+.I boot ,
+the \fIlayersys\fR downloader.   "boot" runs as the layer process for a layer
+being downloaded.   Upon successful completion of the download, boot starts
+the downloaded executable as the new layer process.
+.LI
+The program interface, also known as "the 'U' routines."  These routines 
+are the interface for (downloaded) application programs to the terminal
+libraries.  They convert bitmap operators  (such as \fIbitblt\fR) into layer
+operators.  
+.LE
+.P
+All communication between \fIlayersys\fR routines is done through the
+vector table. This is done to make firmware independent of software
+and to allow patches.
+.H 1 "\fILayersys\fB in detail\fR"
+.P
+\fILayersys\fR is built up of many parts which are constantly interacting.
+Each part was put into a file of its own except where a part was taken
+out and replaced by its binary. Each file will now be explained.
+.H 2 "AGENT.O"
+.P
+As the name implies, this file contains the routine \fIagent\fR which
+interprets all agent calls. It takes as a parameter a pointer to a
+bagent structure. It tries to execute the given command and returns
+the result. The file has one other routine, \fIcheckrect\fR, used
+by \fIagent\fR to check if the given rectangle will fit on the screen.
+.H 2 "BOOT.C"
+.P
+This file contains routines used to down-load or kill a down-loaded program.
+The routines are:
+.VL 10 2
+.LI \fIgetstk\fR
+This routine sets the stack size for a down-loading program. Newstksize
+is set by an \fIagent\fR call. If it's zero, the default is used.
+.LI \fIbldargs\fR
+This routines reads in the strings pointed to by argv for the down-loaded
+program. Argc and argv have already been set. The memory needed for
+argv has already been allocated and argv is pointing to it. The first
+"argc + 1" words are the pointers pointed to by argv and the remaining
+holds the strings that are the command line arguments.
+.LI \fIsetdata\fR
+This routine sets the data field of a process.
+.LI \fIgetchar\fR
+This routine reads a character off the process's input buffer.
+It does a \fIsw\fR(0) because a process will always be
+set running again after receiving a character from the host.
+.LI \fIgetlong\fR
+This routines converts four characters into an integer.
+.LI \fIshutdown\fR
+This routine is called whenever a down-loaded program exits. It handles
+the cleanup needed.
+.LI \fIfreemem\fR
+This routine will free all the memory allocated to a process.
+.LE
+.H 2 "BOOTMAIN.O"
+This file holds only the routine \fIboot\fR. It executes the down-load
+of a program.
+It calls many of the routines in \fBboot.c\fR.
+.H 2 "COMM.C"
+This file handles the time related routines. The routines are:
+.VL 10 2
+.LI \fIclockroutine\fR
+This routine is called from the clock interrupt sixty times a second.
+First it updates ticks0, the number of interrupts since \fIlayersys\fR
+was booted. It then wakes up any process whose alarm has gone off. It then
+reads characters off the raw keyboard queue and puts them on the current
+process's keyboard queue. If the keyboard wasn't requested, they are sent to
+the host. Finally, it updates the mouse structure of the current
+process if the mouse has been requested.
+.LI \fIgivemouse\fR
+This routine does the mouse update for the given process.
+.LI \fIsleep\fR
+This routine puts a process to sleep by setting the alarm and waiting
+for it to go off.
+.LI \fIalarm\fR
+This routine sets the alarm by setting P->nticks.
+.H 2 "CONTROL.C"
+This file holds the main startup routine for \fIlayersys\fR.
+It also holds all the routines needed to display and execute the commands
+given on the menu when button 3 is depressed. The file also holds some
+cursor descriptions. The routines are:
+.VL 10 2
+.LI \fImain\fR
+This is the main startup routine for \fIlayersys\fR. It simply initiallizes
+everything and fades away.
+.LI \fIcontrol\fR
+This is the main routine used by the process \fBcontrol\fR.
+It decides if it or a different process controls the mouse. If it does,
+it executes the action specified by the mouse's buttons.
+Also, it sets \fBdemux\fR running if something has come in from the host.
+.LI \fIExit\fR
+This routine returns the terminal to the resident terminal mode by
+telling \fIlayers\fR to kill \fIlayersys\fR.
+.LI \fIDelete\fR
+This routine deletes a process and removes its window.
+.LI \fIdelproc\fR
+This routine deletes a process by clearing its variables and freeing
+all memory associated with it.
+.LI \fIreshape\fR
+This routine reshapes a layer by creating a new one and deleting the
+old one.
+.LI \fIMove\fR
+This routine switches the cursor to arrows and lets the user move
+around an outline of the layer being moved.
+.LI \fImove\fR
+This routine carries out the move by creating the new layer, copying
+the old one to it, and then deleting the old one.
+.LI \fIwhichaddr\fR
+This routine returns the address of the specified process's structure.
+It is used by routines that wish to be independent of the size
+of the structure Proc. The suppied object files use this.
+.LI \fIgetprocnum\fR
+This is the reverse of \fIwhichaddr\fR. It returns the process's number
+given its address. It also is used by the supplied object files.
+.LI \fIdobutton\fR
+This routines executes the command selected from the main menu.
+.LI \fIwhichproc\fR
+This routine returns the number of the process that owns the given layer.
+.LI \fInewwindow\fR
+This routines starts up a new process.
+.LI \fImpxkbdchar\fR
+This routine is used by \fIclockroutine\fR to send a keyboard character to
+the host by putting it in a buffer.
+.LI \fIwhichlayer\fR
+This routine returns which layer is directly beneath the mouse. The test
+if the mouse is near the edge of the screen is needed because the mouse
+may be unable to get any closer if it has been changed from the default.
+.LI \fItolayer\fR
+This routine makes the specified layer current.
+.LI \fIboarder\fR
+This routine draws or undraws the boarder around a layer to show that
+it is either current or not current.
+.LI \fIsetboarder\fR
+This routine calls boarder with the appropriate values to show if the
+layer is current or not current.
+.LE
+.H 2 "CONTROLIO.O"
+This file contains the routines used by control to talk to the host.
+These are the routines starting with mpx such as mpxsendchar plus
+a few other routines. 
+.H 2 "DEMUX.O"
+This file contains the routines \fIdemux, recvchars,\fR and \fIdoctl\fR.
+These are all used by the process \fBdemux\fR. \fIDemux\fR takes
+characters from the host and sends them to \fIprecv\fR. \fIRecvchars\fR
+takes characters from \fIprecv\fR and puts them on the appropriate
+process's input buffer. \fIDoctl\fR handles control messages.
+.H 2 "EXCEP.S"
+This file holds the routines called when an exception occurs.
+Most of them call \fItrap\fR.
+.H 2 "EXEC.C"
+This file contains the routines for starting up a process. They are:
+.VL 10 2
+.LI \fIexec\fR
+This routine initializes the some pcbs and calls the switcher.
+.LI \fIzombexec\fR
+This routine is the same a \fIexec\fR except it will make the
+starting process call zombsw.
+.LE
+.H 2 "MAINSTK.C"
+This file defines the variable mainstk. It also defines some padding.
+See the documentation on patches for more information.
+.H 2 "PCHECK.O"
+This file holds the routine that does the error checking for
+packets received from the host.
+.H 2 "PINIT.O"
+This file holds routines for initialing the packet protocol routines.
+.H 2 "PL.S"
+This file contains the actual startup routine for layersys, \fI_start\fR.
+It also holds the interrupt routines for the clock, mouse, keyboard,
+and RS232 line.
+.H 2 "PRECV.O"
+This file holds routines for putting received characters into a
+packet and then sending them to processed by routines in demux.o.
+.H 2 "PSEND.O"
+This file holds routines which packetize communication with the host.
+.H 2 "PTIMEOUT.O"
+This file holds a routine that handles the time out of getting a reply
+from the host.
+.H 2 "TASK.C"
+This file contains start up routines and the switcher.
+.VL 10 2
+.LI \fInewproc\fR
+This routine finds and empty process slot and initializes it, returning
+its number.
+.LI \fIrestart\fR
+This routine initializes a process's pcbs.
+.LI \fIsw\fR
+This routine handles the switching out of a process. In other words, when
+this routine is called, the calling process will stop running and a
+different process will start. If it is called with a zero, the calling
+process will not be scheduled to run again unless a different process
+wakes it up.
+.LI \fIswitcher\fR
+This routine is the round robin scheduler for \fIlayersys\fR. It goes through
+each process one at a time, starting it running and waiting for it to call
+\fIsw\fR before starting a new one. After each process 1-7, \fBdemux\fR
+will be scheduled if a character has been received.
+.LI \fIswinit\fR
+This routine initializes the pcbs for the switcher. The switcher is a
+process of its own.
+.LE
+.H 2 "TRAP.C"
+This file has routines used for handling traps or exceptions. The process at fault
+is turned into a zombie and the appropriate error message is displayed.
+.H 2 "USER.C"
+This file contains routines used by a down-loaded program. They are all
+documented in the 5620 DMD Reference Manual.
+.H 2 "VECTOR.H"
+This file defines the calls through the vector table Sys used by all \fIlayersys\fR
+routines.
+.H 2 "VECTOR_TAB"
+This file defines the vector table Sys.
+.H 2 "WINDOWPROC.C"
+This is the default window program. This is executed wheneven a window is
+created or a down-loaded program exits. It is made up of the routines:
+.VL 10 2
+.LI \fIwindowproc\fR
+This is the main routine which interprets escape sequences and puts
+characters on the screen.
+.LI \fInumbers\fR
+This routine retrieves the numbers inside an escape sequence.
+.LI \fIgetanum\fR
+This routine reads in a number and tells if there are more.
+.LI \fIcurse\fR
+This routines draws or undraws the cursor.
+.LI \fInocurse\fR
+This routine changes the cursor to an outlined box and back again.
+.LI \fIreadchar\fR
+This routine reads a character off the process's input buffer and returns it.
+It also handles drawing and undrawing the cursor. Also, it handles a
+BLOCKED process (internally controled ^S/^Q) and the blinking cursor.
+.LI \fIpt\fR
+This routine converts the cursor's position to a layer coordinate.
+.LI \fIRECT\fR
+This routine converts a rectangle from cursor coordinates to screen coordinates.
+.LI \fIlscroll\fR
+This routine scrolls a window horizontally or vertically.
+.LI \fIclippt\fR
+This routine clips a point to the window in cursor coordinates.
+.LI \fIwritec\fR
+This routine writes the given character at the given cursor coordinate
+in the given mode.
+.LI \fInewline\fR
+This routine scrolls the window the given amount of lines.
+.LI \fIlscrolx\fR
+This routine actually executes the scrolling by calling lbitblt.
+.LI \fInlcount\fR
+This routine counts how many newline characters are in the input buffer
+and scrolls the window that many lines.
+.LE

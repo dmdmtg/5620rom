@@ -1,0 +1,30 @@
+# Shell to figure out where layersys should go in rom.
+# Passed "head" as argument if doing layersys; "tail" if doing patches.
+# Second argument is place to look for Text address.
+# Looks up .linkage segment in romterm and puts layersys' .linkage there, too.
+# Looks up symbol "rproc_pc" in romterm.nm and puts layersys' pcbs there.
+#
+# Uses Map to generate 'map'.  Map is a template with "TADDR" wherever the
+# text address should go, "BADDR" wherever the pcbs address should go.
+# Thank [Gg]od for awk(1).
+#
+# Note: Same shell used in ./vector makefile -- check there before making changes.
+#
+if test $1 = "head"		# head command no avail. on all systems
+	then CMD="sed 1q"
+	else CMD="tail -1"
+fi
+taddr=`grep '\.linkage' $2  | $CMD | cut -f4`
+baddr=`fgrep rproc_pc ../../term/romterm.nm  | cut -d'|' -f2`
+if [ -z "$baddr" -o -z "$taddr" ]
+ then
+      if [ -z "$baddr" ]
+       then
+	echo "$0: Symbol 'rproc_pc' not found in src/term/romterm.nm"
+       else
+	echo "$0: Check $2 -- missing '.linkage' section "
+      fi
+      exit 1
+fi
+# No 0x in front of Hex addresses in romterm.map, but there are in romterm.nm. Sigh.
+awk -f mapprog  taddr="0x$taddr" baddr="$baddr" Map >map

@@ -1,0 +1,34 @@
+#
+# firmware conversion shell
+#
+# This shell executes m32conv on all the supplied
+# object files and replaces the object file with
+# the result. The shell must be executed from $ROOT
+# (the directory it is in).
+#
+#
+
+cd src/term
+echo converting load.o
+if m32conv -t $1 load.o
+then
+	mv load.o.v load.o
+else
+	echo "Usage: convert <computer type>"
+	exit 1
+fi
+cd ../xt/layersys
+for i in agent.o bootmain.o controlio.o demux.o pcheck.o \
+	pinit.o precv.o psend.o ptimeout.o
+do
+	echo converting $i
+	if m32conv -t $1 $i
+	then
+		mv $i.v $i
+	else
+		echo failed to convert $i
+		exit 1
+	fi
+done
+cd ../../..
+

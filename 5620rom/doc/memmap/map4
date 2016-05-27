@@ -1,0 +1,55 @@
+
+
+
+
+
+
+
+                  DETAIL OF PCBS AND STACKS MEMORY
+                  --------------------------------
+
+
+
+
+
+
+
+                      resident
+      address size*   terminal        layers          stand-alone
+      ------- ----    --------        ------          -----------
+      
+      71C000  80      reset pcb       EMPTY           EMPTY
+      71C050  80      proc pcb        proc pcb        proc pcb
+              80      stack pcb       stack pcb       stack pcb
+              80      host pcb        host pcb        host pcb
+              80      out pcb         out pcb         out pcb
+              80      pioh pcb        pioh pcb        pioh pcb
+              80      key pcb         key pcb         key pcb
+              80      msvid pcb       msvid pcb       msvid pcb
+              80      piol pcb        piol pcb        piol pcb
+              80      int pcb         int pcb         int pcb
+              128     excep_tab       excep_tab       excep_tab
+              80      main pcb        main pcb        main pcb
+                      
+      71C3F0  256     istack          istack          istack
+              1024    ststk           ststk           ststk
+              400     procstk         procstk         procstk
+              400     stackstk        stackstk        stackstk
+              400     hoststk         hoststk         hoststk
+              400     outstk          outstk          outstk
+              400     piohstk         piohstk         piohstk
+              400     keystk          keystk          keystk
+              400     msvidstk        msvidstk        msvidstk
+              400     piolstk         piolstk         piolstk
+              400     strstk          strstk          strstk
+      
+      71D700
+
+
+
+
+
+
+
+
+      * decimal bytes

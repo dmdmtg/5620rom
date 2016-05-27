@@ -1,0 +1,42 @@
+#
+# setenv shell - sets a required environment variables and some other
+#	         variables that are handy for walking around the dmd tree
+#
+#		 It is assumed that the m32 SGS is in your path before executing
+#		 this shell. How to do this is talked about in the 5620
+#		 Application Development Guide. Note that
+#		 making the firmware is not dependent upon the DMD
+#		 variable.
+#
+# usage:	cd "root of firmware tree"
+#		. ./setenv
+#
+
+#
+# dmd set to root of firmware tree
+#
+dmd=`pwd`
+echo "\nROOT DIRECTORY ..... $dmd\n"
+
+#
+# DMDCC is a full path name to your dmdcc program - it is usually
+# $DMD/bin/dmdcc
+#
+DMDCC=$DMD/bin/dmdcc
+
+#
+# other handy variables
+#
+term=$dmd/src/term
+layersys=$dmd/src/xt/layersys
+libsys=$dmd/src/lib/libsys
+libj=$dmd/src/lib/libj
+liblayer=$dmd/src/lib/liblayer
+libc=$dmd/src/lib/libc
+
+#
+# change your prompt to remind you what tree you are currently in.
+#
+PS1="`expr "$dmd" : '.*/\(.*\)'`$ "
+
+export dmd DMDCC term layersys libsys libj liblayer libc PS1

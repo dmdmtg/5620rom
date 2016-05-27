@@ -1,0 +1,23 @@
+echo "\n\n\n\n\n"
+banner include listing
+date
+echo "\f\c"
+pr -f -n \
+cursor.h \
+dmd.h \
+dmdproc.h \
+duart.h \
+font.h \
+kbd.h \
+keycodes.h \
+layer.h \
+line.h \
+msgs.h \
+options.h \
+pf.h \
+queue.h \
+sa.h \
+scc.h \
+selftest.h \
+setup.h \
+sys/2681.h

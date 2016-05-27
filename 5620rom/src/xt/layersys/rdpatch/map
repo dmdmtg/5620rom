@@ -1,0 +1,12 @@
+SECTIONS {
+
+ GROUP 0x0071c3a0 : {
+	.mpcb : {mainpcb.o}
+	}
+
+ GROUP 0x00722c10 : {
+	.text :	{}
+	.data  : {}
+	.bss : {}
+	}
+}

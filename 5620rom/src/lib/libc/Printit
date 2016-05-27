@@ -1,0 +1,8 @@
+echo "\n\n\n\n\n"
+banner libc listing
+date
+echo "\f\c"
+pr -f -n \
+abs.c \
+qsort.c \
+strlen.c

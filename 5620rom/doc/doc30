@@ -1,0 +1,73 @@
+.H 1 "REFERENCES"
+.H 2 "PUBLISHED DOCUMENTS"
+.AL
+.LI
+.B
+Pike, R.
+.I
+Graphics in Overlapping Bitmap Layers
+.R
+Computer Graphics (ACM/SIGGRAPH), SIGGRAPH '83 Conference Proceedings,
+Volume 17, Number 3, July 1983, 331-356
+.P
+An excellent article about how overlapping bitmap graphics is done
+in the layers environment. Discusses many of the routines in liblayer
+and libj.
+.LE
+.H 2 "SOFTWARE DOCUMENTS AVAILABLE FROM AT&T TECHNOLOGIES, INC."
+.P
+Contact your AT&T Technologies sales representative for information about
+these documents.
+.H 3 "5620 DMD HOST SOFTWARE DOCUMENTS"
+.AL
+.LI
+5620 DMD Application Development Guide
+.P
+Contains information about software development for the 5620 DMD.
+Familiarity with this document is essential background for modifying
+firmware as well as developing new application programs.
+.LI
+5620 DMD User Guide
+.P
+Contains basic operation of the 5620 DMD terminal and basic UNIX system
+commands applicable to the terminal.
+.LI
+5620 DMD Reference Manual
+.P
+Contains a manual description of software generation system (SGS) commands.
+It also describes structures and functions used by firmware.
+This manual gives essential information for software development or
+firmware modification.
+.LI
+5620 DMD Text Processing and Graphics Application Guide
+.P
+Contains information for using the 5620 DMD text processing and graphics
+application packages.
+.LI
+5620 DMD Administrators Guide
+.P
+Contains the information necessary for the UNIX System Administrator to
+install, configure, and maintain the UNIX system DMD environment.
+.LI
+5620 DMD Product Overview
+.P
+Contains a very brief description of enhancements since the last software
+release (5620 DMD Release 1.2) and a list of what computer systems the 5620
+is supported to work with.
+.LE
+.H 3 "UNIX SYSTEM DOCUMENTS"
+.AL
+.LI
+UNIX System User's Manual
+.P
+Manual for standard UNIX commands.
+.LI
+UNIX System Programming Guide
+.P
+Contains tutorials on shell programming and C language, as well as
+other topics.
+.LI
+UNIX System Support Tools Guide
+.P
+Contains tutorials on the make utility, as well as other topics.
+.LE

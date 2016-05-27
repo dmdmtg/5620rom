@@ -1,0 +1,317 @@
+/*
+ * vector_tab - rvector.s (rom copy) and vector.s (ram copy) created from
+ * this file by the makefile. New entries MUST be added at the end (before
+ * end_vt)
+*/
+
+#ifdef	RVECTOR
+	.file	"rvector.s"
+	.globl	RSys
+	.data
+	.align	4
+RSys:
+#else
+	.file	"vector.s"
+	.globl	Sys
+	.globl	P
+	.data
+	.align	4
+Sys:
+P:		# P must be set to a valid process; an unused oneis the best bet
+#endif
+	.word	0			# P; loaded by system as it runs, Sys[0]
+	.word	defont			# Sys[1]==pointer to default font, Sys[1]
+	.word	add			# Sys[2]
+	.word	addr			# Sys[3]
+	.word	Ualloc			# Sys[4]
+	.word	Uballoc			# Sys[5]
+	.word	bfree			# Sys[6]
+	.word	Ubitblt			# Sys[7]
+	.word	Ucursallow		# Sys[8]
+	.word	Ucursinhibit		# Sys[9]
+	.word	Ucursswitch		# Sys[10]
+	.word	dellayer		# Sys[11]
+	.word	div			# Sys[12]
+	.word	eqrect			# Sys[13]
+	.word	Uexit			# Sys[14]
+	.word	free			# Sys[15]
+	.word	inset			# Sys[16]
+	.word	Ujinit			# Sys[17]
+	.word	Ujline			# Sys[18]
+	.word	Ujlineto		# Sys[19]
+	.word	Ujmove			# Sys[20]
+	.word	Ujmoveto		# Sys[21]
+	.word	Ujpoint			# Sys[22]
+	.word	Ujrectf			# Sys[23]
+	.word	Ujsegment		# Sys[24]
+	.word	Ujstring		# Sys[25]
+	.word	Ujtexture		# Sys[26]
+	.word	Ukbdchar		# Sys[27]
+	.word	nap			# Sys[28]
+	.word	Upoint			# Sys[29]
+	.word	Urectf			# Sys[30]
+	.word	Usegment		# Sys[31]
+	.word	sleep			# Sys[32]
+	.word	Utexture		# Sys[33]
+	.word	menuhit			# Sys[34]
+	.word	mul			# Sys[35]
+	.word	newlayer		# Sys[36]
+	.word	Uown			# Sys[37]
+	.word	ptinrect		# Sys[38]
+	.word	raddp			# Sys[39]
+	.word	Urcvchar		# Sys[40]
+	.word	rectXrect		# Sys[41]
+	.word	rectclip		# Sys[42]
+	.word	Urequest		# Sys[43]
+	.word	rsubp			# Sys[44]
+	.word	Uscreenswap		# Sys[45]
+	.word	Usendchar		# Sys[46]
+	.word	sendnchars		# Sys[47]
+	.word	string			# Sys[48]
+	.word	strwidth		# Sys[49]
+	.word	sub			# Sys[50]
+	.word	sw			# Sys[51]
+	.word	upfront			# Sys[52]
+	.word	Uwait			# Sys[53]
+	.word	clear			# Sys[54]
+	.word	debug			# Sys[55]
+	.word	realgcalloc		# Sys[56]
+	.word	gcfree			# Sys[57]
+	.word	getrect			# Sys[58]
+	.word	alarm			# Sys[59]
+	.word	lpoint			# Sys[60]
+	.word	lrectf			# Sys[61]
+	.word	lsegment		# Sys[62]
+	.word	ltexture		# Sys[63]
+	.word	transform		# Sys[64]
+	.word	rtransform		# Sys[65]
+	.word	realtime		# Sys[66]
+	.word	cursinhibit		# Sys[67]
+	.word	cursallow		# Sys[68]
+	.word	Ucursset		# Sys[69]
+	.word	newproc			# Sys[70]
+	.word	mpxnewwind		# Sys[71]
+	.word	newwindow		# Sys[72]
+	.word	tolayer			# Sys[73]
+	.word	jstrwidth		# Sys[74]
+	.word	Bottom			# start of vector table, Sys[75]
+	.word	Control			# Sys[76]
+	.word	Current			# Sys[77]
+	.word	Delete			# Sys[78]
+	.word	Exit			# Sys[79]
+	.word	Move			# Sys[80]
+	.word	New			# Sys[81]
+	.word	Psend			# Sys[82]
+	.word	Reply			# Sys[83]
+	.word	Reshape			# Sys[84]
+	.word	Retry			# Sys[85]
+	.word	Sw			# Sys[86]
+	.word	Top			# Sys[87]
+	.word	_start			# Sys[88]
+	.word	agent			# Sys[89]
+	.word	bldargs			# Sys[90]
+	.word	boot			# Sys[91]
+	.word	bttns			# Sys[92]
+	.word	canon			# Sys[93]
+	.word	checkrect		# Sys[94]
+	.word	clippt			# Sys[95]
+	.word	clockroutine		# Sys[96]
+	.word	control			# Sys[97]
+	.word	copy			# Sys[98]
+	.word	crc			# Sys[99]
+	.word	curse			# Sys[100]
+	.word	delproc			# Sys[101]
+	.word	demux			# Sys[102]
+	.word	dobutton		# Sys[103]
+	.word	doctl			# Sys[104]
+	.word	error			# Sys[105]
+	.word	excep_norm		# Sys[106]
+	.word	excep_proc		# Sys[107]
+	.word	excep_stack		# Sys[108]
+	.word	exec			# Sys[109]
+	.word	execsw			# Sys[110]
+	.word	freemem			# Sys[111]
+	.word	getanum			# Sys[112]
+	.word	getchar			# Sys[113]
+	.word	getlong			# Sys[114]
+	.word	givemouse		# Sys[115]
+	.word	host_int		# Sys[116]
+	.word	itox			# Sys[117]
+	.word	jstring			# Sys[118]
+	.word	key_int			# Sys[119]
+	.word	lscroll			# Sys[120]
+	.word	lscrolx			# Sys[121]
+	.word	main			# Sys[122]
+	.word	max			# Sys[123]
+	.word	min			# Sys[124]
+	.word	move			# Sys[125]
+	.word	mpxcore			# Sys[126]
+	.word	mpxdelwind		# Sys[127]
+	.word	mpxkbdchar		# Sys[128]
+	.word	mpxkbdflush		# Sys[129]
+	.word	mpxsendchar		# Sys[130]
+	.word	mpxublk			# Sys[131]
+	.word	msvid_int		# Sys[132]
+	.word	newline			# Sys[133]
+	.word	nlcount			# Sys[134]
+	.word	numbers			# Sys[135]
+	.word	out_int			# Sys[136]
+	.word	outline			# Sys[137]
+	.word	pinit			# Sys[138]
+	.word	precv			# Sys[139]
+	.word	psend			# Sys[140]
+	.word	pt			# Sys[141]
+	.word	ptimeout		# Sys[142]
+	.word	readchar		# Sys[143]
+	.word	RECT			# Sys[144]
+	.word	recvchars		# Sys[145]
+	.word	reshape			# Sys[146]
+	.word	restart			# Sys[147]
+	.word	sendpkt			# Sys[148]
+	.word	setdata			# Sys[149]
+	.word	shade			# Sys[150]
+	.word	shutdown		# Sys[151]
+	.word	switcher		# Sys[152]
+	.word	trap			# Sys[153]
+	.word	whichbutton		# Sys[154]
+	.word	whichlayer		# Sys[155]
+	.word	whichproc		# Sys[156]
+	.word	windowproc		# Sys[157]
+	.word	windowstart		# Sys[158]
+	.word	writec			# Sys[159]
+	.word	zombexec		# Sys[160]
+	.word	zombsw			# Sys[161]
+	.word	swinit			# Sys[162]
+	.word	Free_RAM		# Sys[163]
+	.word	version			# Sys[164]
+	.word	ringbell		# Sys[165]
+	.word	sysrun			# Sys[166]
+	.word	cup			# Sys[167]
+
+#ifndef	RVECTOR
+	.globl	kbdproc
+	.globl	debugger
+	.globl	second
+	.globl	ticks
+	.globl	ticks0
+	.globl	usermouse
+	.globl	kbdlistp
+	.globl	hst_init
+	.globl	sendbusy
+	.globl	rebootflag
+	.globl	last
+	.globl	patchedspot
+	.globl	patch
+	.globl	end_vt
+#endif
+
+kbdproc:				# Sys[168]
+	.word	0
+debugger:				# Sys[169]
+	.word	0
+second:					# Sys[170]
+	.word	0
+ticks:					# Sys[171]
+	.word	0
+ticks0:					# Sys[172]
+	.word	0
+	.word	proctab			# Sys[173]
+	.word	pconvs			# Sys[174]
+	.word	pconfig			# Sys[175]
+	.word	menufn			# Sys[176]
+	.word	windowmenu		# Sys[177]
+usermouse:				# Sys[178]
+	.word	0
+	.word	kbdlist			# Sys[179]
+kbdlistp:				# Sys[180]
+	.word	0
+hst_init:				# Sys[181]
+	.word	0
+	.word	bullseye		# Sys[182]
+	.word	skull			# Sys[183]
+	.word	boxcurs			# Sys[184]
+	.word	menutext		# Sys[185]
+sendbusy:				# Sys[186]
+	.word	0
+	.word	shademap		# Sys[187]
+rebootflag:				# Sys[188]
+	.word	0
+last:					# Sys[189]
+	.word	0
+patchedspot:				# Sys[190]
+	.word	0
+patch:					# Sys[191]
+	.word	0
+	.word	psendchar		# Sys[192]
+
+	.word	C_crosshair	# Sys[193]
+	.word	MCur_clock	# Sys[194]
+	.word	arrows		# Sys[195]
+	.word	0		# Sys[196]
+	.word	0		# Sys[197]
+	.word	MCur_skull	# Sys[198]
+	.word	MCur_sweep	# Sys[199]
+	.word	MCur_target1	# Sys[200]
+	.word	C_confirm	# Sys[201]
+	.word	MCur_cup	# Sys[202]
+	.word	MCur_deadmouse	# Sys[203]
+	.word	0		# Sys[204]
+	.word	0		# Sys[205]
+	.word	0		# Sys[206]
+	.word	T_background	# Sys[207]
+	.word	T_darkgrey	# Sys[208]
+	.word	T_grey		# Sys[209]
+	.word	T_lightgrey	# Sys[210]
+	.word	T_white		# Sys[211]
+	.word	T_black		# Sys[212]
+	.word	T_checks	# Sys[213]
+
+	.word	Upolyf		# Sys[214]
+	.word	0		# Sys[215]  Used to be Ujpolyf
+	.word	ptinpoly	# Sys[216]
+	.word	Uclipbttn	# Sys[217]
+	.word	point2layer	# Sys[218]
+	.word	whichaddr	# Sys[219]
+	.word	downback	# Sys[220]
+	.word	cbufavail	# Sys[221]
+	.word	passchar	# Sys[222]
+	.word	abs		# Sys[223]
+	.word	bramgetstr	# Sys[224]
+	.word	ceil		# Sys[225]
+	.word	eqpt		# Sys[226]
+	.word	floor		# Sys[227]
+	.word	strlen		# Sys[228]
+	.word	Pt		# Sys[229]
+	.word	Rect		# Sys[230]
+	.word	Rpt		# Sys[231]
+	.word	botbits		# Sys[232]
+	.word	topbits		# Sys[233]
+	.word	display		# Sys[234]
+	.word	qsort		# Sys[235]
+	.word	checkbram	# Sys[236]
+	.word	cursswitch	# Sys[237]
+	.word	layerop		# Sys[238]
+	.word	lbitblt		# Sys[239]
+	.word	lblt		# Sys[240]
+	.word	qclear		# Sys[241]
+	.word	qgetc		# Sys[242]
+	.word	qputc		# Sys[243]
+	.word	setbram		# Sys[244]
+	.word	spl0		# Sys[245]
+	.word	spl4		# Sys[246]
+	.word	spl7		# Sys[247]
+	.word	splx		# Sys[248]
+	.word	allocendp	# Sys[249]
+	.word	allocstartp	# Sys[250]
+	.word	ENDAREA		# Sys[251]
+	.word	maxaddr		# Sys[252]
+	.word	mouse		# Sys[253]
+	.word	nextlong	# Sys[254]
+
+end_vt:				# This blank variable must always be last
+	.word	0		#   label in this file 
+
+#ifndef	RVECTOR
+	.globl	alenvtab	# length of vector table used in link.s
+	.set alenvtab,(end_vt - Sys)
+#endif

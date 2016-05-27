@@ -1,0 +1,33 @@
+echo "\n\n\n\n\n"
+banner libj listing
+date
+echo "\f\c"
+pr -f -n \
+addr.s \
+alloc.c \
+arith.s \
+balloc.c \
+bitblt.c \
+clip.c \
+defont.c \
+gcalloc.c \
+icons.c \
+jlineto.c \
+jpoint.c \
+jstring.c \
+jtexture.c \
+line.c \
+masks.c \
+menu.c \
+min.s \
+point.c \
+polyf.c \
+ptinrect.c \
+rect.s \
+rectXrect.c \
+rectclip.c \
+rectf.c \
+screenswap.c \
+string.c \
+strwidth.c \
+texture.s \

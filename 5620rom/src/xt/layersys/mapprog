@@ -1,0 +1,4 @@
+/TADDR/ { $2 =  taddr; }
+/BADDR/ { $2 = baddr; }
+/LADDR/ { $2 = laddr; }
+{ print }

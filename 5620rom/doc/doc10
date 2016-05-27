@@ -1,0 +1,164 @@
+.H 1 "GENERAL INFORMATION"
+.H 2 "INTRODUCTION"
+.P
+This document describes the AT&T Teletype 5620 DMD Firmware Source Tape
+for firmware version 8;7;5. Firmware Version 8;7;5 corresponds to
+AT&T 5620 DMD host software Release 2.0. The tape is intended to be
+installed on AT&T 3B20S or Digital Equipment Corporation VAX\*F
+.FS
+VAX is a trademark of Digital Equipment Corporation
+.FE
+series computers.
+Installation on other computers may require porting efforts.
+The AT&T 5620 DMD Application Development Binary Release 2.0 software 
+package must be installed on the host to compile and modify the
+firmware source. The AT&T 5620 DMD Core Binary Release 2.0
+and AT&T 5620 DMD Text Processing and Graphics Application Binary Release
+2.0 software packages must be installed on the host to test interaction
+of the firmware with host software packages. Contact your AT&T Technologies 
+sales representative for information about
+the three above mentioned host software packages.
+.P
+Section 3 of this document contains a list of all references cited below.
+.H 2 "INSTALLATION INSTRUCTIONS"
+.P
+The following steps install the Firmware Source Tape:
+.AL
+.LI
+Determine where to put the software. The tape contains around 1300 blocks
+which will expand to around 5000 blocks when it is compiled. The directory
+into which the tape is loaded will be referred to as $ROOT throughout the
+rest of this document.
+.LI
+Mount the tape on a 1600 BPI tape drive.
+.LI
+Load the software with the commands:
+.DS CB
+$ cd $ROOT
+$ cpio -iBcdmv </dev/"raw_tape_device"
+.DE
+This will load the tape and print out a listing of files on the tape.
+.LE
+.P
+The directory structure for the firmware tape contains all files necessary
+to build the firmware and should not be merged with 5620 DMD host software
+directories.
+.H 2 "BUILDING THE FIRMWARE"
+.P
+There are three shell files in the $ROOT directory called setenv, convert
+and make.firm.
+The setenv shell should be run before make.firm. It sets a shell
+variable, DMDCC, which is necessary for building the firmware, as well
+as a number of other shell variables which are useful for walking
+around the firmware directories.
+It assumes that the SGS bin is in $PATH.
+The DMDCC variable in setenv should contain the
+full path name to your dmdcc\*F
+.FS
+See dmdcc(1) in the Software Developer Application Guide
+.FE
+program. If your dmdcc program is located
+in $DMD/bin, setenv requires no modification. If it is not in this
+standard location, setenv must be edited for to reflect this change.
+.P
+When building firmware, dmdcc will look in the firmware tree
+for some host software files.
+The files will have to be
+copied to the firmware tree in the same relative path from $ROOT.
+Assuming $DMD is the root of the
+host software directory hierarchy,
+these files are $DMD/lib/cpp, $DMD/lib/comp, $DMD/lib/optim, and
+$DMD/bin/as.
+.P
+The convert shell converts supplied object files from the
+3B20 format to the desired host format. It runs m32conv
+on the object files. This is explained more fully below.
+.P
+The make.firm shell makes all of the firmware and produces eight
+intel hex files suitable for burning eproms. These are compared
+to saved previously made files to be sure everything was built properly.
+Some minor differences will occur because of a
+time stamp put into the code.
+.P
+The firmware can therefore be built with the following commands:
+.DS CB
+$ cd $ROOT
+$ . setenv
+$ cp $DMD/lib/cpp lib/cpp
+$ cp $DMD/lib/comp lib/comp
+$ cp $DMD/lib/optim lib/optim
+$ cp $DMD/bin/as bin/as
+$ convert "host type"     #if not 3B20
+$ make.firm
+.DE
+.P
+Both the setenv and make.firm shells are extensively documented and
+should be read as a guide to how the firmware is built.
+.H 2 "OBTAINING A PRINTOUT OF THE FIRMWARE SOURCE"
+.P
+Each firmware directory has a shell file called Printit which will
+print out a listing of the files in that directory. The file
+$ROOT/printouts/README provides a road map.
+.H 2 "SUPPLIED OBJECT FILES"
+.P
+Some source files have been replaced by their corresponding
+object file to prevent possible
+incompatibility with the host software. These files deal mainly
+with host/terminal communication. The object files are:
+.DS CB
+$ROOT/src/term/load.o
+$ROOT/src/xt/layersys/agent.o
+$ROOT/src/xt/layersys/bootmain.o
+$ROOT/src/xt/layersys/controlio.o
+$ROOT/src/xt/layersys/demux.o
+$ROOT/src/xt/layersys/pcheck.o
+$ROOT/src/xt/layersys/pinit.o
+$ROOT/src/xt/layersys/pprecv.o
+$ROOT/src/xt/layersys/psend.o
+$ROOT/src/xt/layersys/ptimeout.o
+.DE
+.P
+These files are in the 3B20 format and may need to be
+converted to the format of the host it now resides on.
+This is done using m32conv. The shell file
+.BI convert
+will convert all the object files to the specified format.
+For example:
+.DS CB
+convert vax
+.DE
+.P
+will convert them to the vax format.
+.P
+Because some code changes were needed to break out the
+host/terminal communication modules, the compiled code
+will not match what is in the official v2.0 ROMs in the terminal,
+but it is functionally the same.
+.P
+Since the object files cannot be modified, some of the other
+code that it references should not be modified. These
+dependencies are listed in the file dependent. The functions
+and variables referenced should remain functionally intact.
+For example, boot() in bootmain.c calls bldargs().
+If bldargs is changed, boot() will set up the arguements
+for a down-loading program and this could crash
+the terminal. Also, structures used can only be extended except for clist
+and physops which are used in arrays.
+If c_cc and state are switched for a clist structure, demux won't know when the host
+receive queue gets a character and the terminal will hang.
+If the clist structure is extended, routines looking at the output
+queue to the host defined as queues[2], where queues is an array of clists,
+would not find the new address of the output queue.
+This has been corrected for the process table proctab defined as an array
+of Proc. All references to an indexed value of proctab is done
+through the routines whichaddr and getprocnum.
+.H 2 "USING DMDEBUG WITH MODIFIED FIRMWARE"
+.P
+The dmdebug program, supplied with the 5620 DMD Application
+Development Binary Release 2.0 software package, requires a new symbol
+table file to work with modified firmware.
+This file must be replaced every time dmdebug is used with
+recompiled firmware.
+The file to be installed is
+$ROOT/src/xt/layersys/lsym.
+It should be installed in $DMD/lib/lsym."version_number".

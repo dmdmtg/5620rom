@@ -1,0 +1,18 @@
+echo "\n\n\n\n\n"
+banner libsys listing
+date
+echo "\f\c"
+pr -f -n \
+acia.c \
+buttons.c \
+cursblt.s \
+cursor.c \
+excep.c \
+kbd.c \
+l.s \
+logio.c \
+pf.c \
+queue.c \
+sccops.c \
+setup.c \
+wait.c

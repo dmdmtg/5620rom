@@ -1,0 +1,75 @@
+
+This is a list of dependancies that the withheld source files have.
+
+agent.c
+=======
+routines	variables	structures	definitions
+--------	---------	----------	-----------
+dellayer	kbdproc		agentrect	A_BOTTOM
+delproc		lback		bagent		A_CURRENT
+downback	proctab		Proc		A_DELETE
+getprocnum	ver_str				A_EXIT
+getrect						A_MOVE
+inset						A_NEW
+move						A_NEWLAYER
+newlayer					A_RESHAPE
+newproc						A_ROMVERSION
+rectclip					A_STACKSIZE
+reshape						A_TOP
+setborder					C_EXIT
+tolayer						C_NEW
+upfront						C_RESHAPE
+whichaddr
+whichproc
+						Sys[158]
+
+bootmain.c
+==========
+routines	variables	structures	definitions
+--------	---------	----------	-----------
+bldargs		P		Proc		F_XOR
+clear		proctab		udata		MINSTKSIZ
+exec						MOUSE
+freeall						STKSIZ
+getchar						USER
+getlong						ZOMBOOT
+getstk						ZOMBIE
+lrectf
+realalloc
+setdata
+Sw
+Ualloc
+Ucursswitch
+Urequest
+zombexec
+
+controlio.c
+===========
+routines	variables	structures	definitions
+--------	---------	----------	-----------
+getprocnum	ENCODE_ENABLE	clist		CBSIZE
+qputc		hostops		physops		C_BRAINDEATH
+spl1		kbdlist		Proc		C_UNBLK
+splx		kbdlistp
+sw		proctab
+whichproc	second
+		sendbusy
+
+demux.c
+=======
+routines	variables	structures	definitions
+--------	---------	----------	-----------
+error		ENCODE_ENABLE	bagent		BLOCKED
+freemem		end		clist		BUSY
+itox		hostops		jerqmesg	CBSIZE
+nap		hst_init	jwinsize	C_UNBLK
+qgetc		kbdproc		physops		JAGENT
+reboot		proctab		Proc		JBOOT
+setrun		rebootflag			JTERM
+shutdown					JTIMO
+sw						JTIMOM
+whichaddr					JZOMBOOT
+						NPCBUFS
+						PIPETO
+
+

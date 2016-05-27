@@ -1,0 +1,19 @@
+The '5620rom' directory is the 5620 rom source tape that was prepared many
+years back.  It is mostly untouched.  Documentation is under 5620rom/doc.
+See especially the 'Doc' file.  Also see 5620rom/README and 5620rom/README2.
+
+If you have any successes with this package or any modifications you'd like
+to see me put in, please send me email.
+
+I was unable to locate a patch directory which was set up to re-generate the
+lsys.8;7;3 which patches a 1.1 version ROM into 2.0 functionality, but
+theoretically everything you need is here.  If any of you takes the time to
+create such a directory, please send it to me so I include it in this package.
+
+This source code is copyrighted by AT&T but is distributable under the
+terms of the GNU General Public License.  See the 'COPYING' file for
+details.
+
+- Dave Dykstra
+  David.W.Dykstra@att.com
+  3/25/94

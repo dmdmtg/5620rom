@@ -1,0 +1,14 @@
+This directory contains the source tape documentation.
+
+To compile use:
+
+	nroff -mm doc??
+
+Appendix 1 is memmap/*
+Appendix 2 is dependent
+
+This other files in this directory describe the files
+in the directory of the same name an should be looked
+at by using:
+
+	nroff -mm "file"

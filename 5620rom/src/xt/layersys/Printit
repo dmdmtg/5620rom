@@ -1,0 +1,21 @@
+echo "\n\n\n\n\n"
+banner layersys listing
+date
+echo "\f\c"
+pr -f -n \
+boot.c \
+comm.c \
+control.c \
+crtm.s \
+excep.s \
+exec.c \
+link.s \
+lpcbs.c \
+mainstk.c \
+pl.s \
+task.c \
+trap.c \
+user.c \
+vector.h \
+vector_tab \
+windowproc.c

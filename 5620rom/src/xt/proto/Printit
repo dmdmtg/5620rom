@@ -1,0 +1,14 @@
+echo "\n\n\n\n\n"
+banner proto listing
+date
+echo "\f\c"
+pr -f -n \
+packets.h \
+pcheck.c \
+pconfig.h \
+pinit.c \
+precv.c \
+proto.h \
+psend.c \
+pstats.h \
+ptimeout.c

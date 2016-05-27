@@ -1,0 +1,56 @@
+
+
+
+
+
+
+
+
+
+			  APPENDIX 1
+			  ----------
+
+
+			  MEMORY MAP
+			  ----------
+
+
+	   address *
+
+		      0 ---------------
+			|             |
+			| eprom space |
+			|             |
+		   FFFF --------------
+
+
+			---------------
+			|             |
+			|  I/O space  |
+			|	      |
+			--------------
+
+
+		700,000 ---------------
+			|             |
+			|  ram space  |
+			|             |
+			|             |
+			|             |
+			|             |
+		end of ram depends
+		upon whether 256K
+		or 1 MB terinal
+
+
+
+
+
+
+
+
+
+
+
+
+	* all addresses are in hex

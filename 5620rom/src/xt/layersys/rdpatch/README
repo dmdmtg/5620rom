@@ -1,0 +1,58 @@
+Directory for producing rom dependent patchs.  These are quick and dirty
+layersys patches useful for debugging on eprom based terminals. These
+patches will not work on other than the firmware version for which
+they were compiled.
+
+This directory contains some useful utility programs - in particular,
+it knows how to generate the lrom.s file which is a file of layersys rom
+addresses.
+
+lsys.nm.2.0 is the namelist for v2.0. This directory is set up to work with
+official v2.0 roms distributed by Teletype only. To change this, you
+will need a namelist for the eproms you are patching. If you make new
+roms from this tape, the file src/xt/layersys/layersys.nm, which is
+produced by the layersys makefile, is the namelist for these new roms.
+In this case, you should change the name from lsys.v2.0 to
+lsys."myroms" and edit the makefile to reflect the new namelist,
+because you might not want to distroy the official namelist.
+
+Caution: For v1.1 firmware with windowproc being downloaded
+windowproc must be included with any patch. It also must be the
+first item on the dmdcc (m32ld) command line in the makefile.
+
+There is more information in the firmware source documentation in
+$ROOT/doc (ROOT of the firmware tree).
+
+Steps to making a patch:
+
+0. Install the proper layersys namelist in this directory as discussed
+   	above. Edit the makefile if you changed the name.
+1. Identify the ROM routine you want to patch.
+2. Copy the source file (from $DMD/src/xt/layersys) over to your patch
+	directory, and modify it accordingly. Remove the "undef" and
+	"ifdefs" around function declarations.
+3. Get the routine-number from vector.h  (e.g., fgrep trap vector.h)
+	Be sure to grep according to the routine names you changed, NOT the
+	name of the source file that the routine happens to reside in.
+4. Edit startup.c, add the appropriate lines for your routines
+	(extern int function, ...;  Sys[#] = &function);
+	# is the routine-number from the grep in the previous step.
+5. Edit badname.f, add your routine names to the end of this file according
+	to examples on previous lines of that file.
+6. Edit makefile, add your files to the "cc -o patch" line and also how
+	to build their .o's, dependencies, etc. Be sure you are compiling
+	with -DMPXTERM (you will be if you copy from the layersys makefile.
+	If you are patching a library you might have to add this).
+7. Say "make"
+8. To use it, say: "layers ./patch"
+
+When something goes wrong, very often firmware will blow up and you
+will get stripes on your screen. There is no easy way to debug. Just
+make sure you followed all of the above steps. Having the wrong namelist
+is a common problem sure to cause stripes.
+
+First patch the routine you want to change as it exists in firmware.
+When you get that going, then make your code changes. This way you
+know if it is your code changes or the patch mechanism that is blowing
+up. After you get a little experience with patches (like you succeeded
+once) it gets quite easy.

@@ -1,0 +1,16 @@
+To get a printout of firmware source:
+
+Print.makefile in this directory will print makefiles and some map files
+
+There is also a shell file Printit in each of the following
+directories under $ROOT:
+
+	include
+	src/lib/libc
+	src/lib/libj
+	src/lib/liblayer
+	src/lib/libsys
+	src/term
+	src/xt/layersys
+
+Be sure your printer has plenty of paper - it's a few inches

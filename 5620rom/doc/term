@@ -1,0 +1,149 @@
+.H 1 "STAND-ALONE IN DETAIL"
+The term directory holds routines used for stand-alone and
+resident terminal modes.
+The files are:
+.H 2 "BOOTROM.S"
+This is where the terminal starts running when it is turned on.
+It initializes the interrupt stack and tests if the terminal
+was just turned on or reset by the user. If it was just turned
+on, it will waste some time in a loop, waiting for everything
+to warm up, then call selftest. It then finishes initialization
+and calls \fImain\fR, the resident terminal program,
+ in \fBvitty.c\fR. \fBVitty.c\fR will
+return only if a down-load is to occur.
+It then sets things up for a stand-alone program or layersys and
+calls \fIload\fR. When \fIload\fR returns, the program or layersys is
+booted. When the
+program or layersys returns, the terminal is rebooted .
+This file also contains the keyboard, clock, mouse, and host interrupt.
+It also has the routines that set the interrupt level.
+.H 2 "BRAM.C"
+This file has routines that modify the bram. They are:
+.VL 10 2
+.LI \fIcheckbram\fR
+This routine checks that the checksum for the battery backed ram is correct.
+If it isn't, it resets all of bram to its default values.
+.LI \fIinitbram\fR
+This routine initializes the bram to its default values.
+.LI \fIsetbram\fR
+This routine sets the checksum in bram. It should be called every time
+bram is changed.
+.LI \fIqsetbram\fR
+This routine updates the bram value and the checksum.
+The normal sequence for updating bram is to call \fIcheckbram\fR,
+change the bram value, call \fIsetbram\fR.
+This routine does not do the error checking, making it faster and
+therefore spending less time at the high interrupt level.
+.LE
+.H 2 "LINK.C"
+This file holds values that will be filled in when \fIlayersys\fR is
+compiled. The \fIlayersys\fR version of this file, \fBlink.s\fR, is
+set to the same memory address and initializes \fIlayersys\fR
+variables \fIromterm\fR needs to know.
+.H 2 "LOAD.O"
+This file contains the stand-alone down-loading routine.
+.H 2 "LOWMEM.C"
+This file initializes the exception handling vector table and
+must be loaded into memory address 0x0.
+.H 2 "PCBS.C"
+This file defines and initializes pcbs.
+.H 2 "SELFTEST.C"
+This file holds routines used for power on and keyboard requested
+selftests. These routines are:
+.VL 10 2
+.LI \fItest32\fR
+If called with a 0 it assumes a power on selftest, otherwise a keyboard
+requested selftest.
+First, it sets the psw and copies the pcbs into RAM.
+It then clears the screen and calls the individual tests.
+.LI \fIdraw_ver\fR
+This routine draws the message seen for a keyboard requested
+selftest.
+.LI \fIreppcb\fR
+This routine copies the pcbs into RAM.
+.LI \fIrom\fR
+This routine tests the ROM. It calculates the checksum and compares
+it to the one stored in ROM. It will loop until successful.
+.LI \fIram\fR
+This routine tests the RAM. This is done by writing into memory
+and reading it back out. This routine also determines if the
+terminal has 256K or 1M of RAM.
+.LI \fIbram\fR
+This routine tests BRAM. It saves a copy of BRAM, then it writes
+into BRAM and reads it back. Afterward, it replaces the old values
+in BRAM.
+.LI \fIduart\fR
+This routine tests the DUART.
+.LI \fIt_delayer\fR
+This routine loops the given number of times, doing nothing.
+.LI \fItrack\fR
+This routine starts up the mouse tracking phase of a keyboard
+requested selftest.
+.LI \fIcppcbs\fR
+This routine copies the pcbs.
+.LI \fImousetest\fR
+This routine initializes the mouse test.
+.LI \fIalways\fR
+This routine loops 2000 times and returns.
+.LI \fIdrawchar\fR
+This routine draws the given string at the given point.
+.LI \fIstmsvid_int\fR
+This routine tracks the mouse across the screen.
+.LI \fItype\fR
+This routine executes the keyboard test for a keyboard requested
+selftest.
+.LI \fIblank\fR
+This routine clears the top half of the screen.
+.LI \fIpio_mse\fR
+This routine tests the communication with the mouse.
+.LI \fIt_shade\fR
+This routine shades the screen.
+.LI \fIcolor\fR
+This routine colors the entire screen.
+.LI \fIlit_draw\fR
+This routine writes the name of what is currently being tested.
+.LI \fIshortram\fR
+This is an abbreviated version of \fIram\fR.
+.LE
+.H 2 "VECTOR.S"
+This file contains the definition of \fIFirm\fR, the stand-alone
+vector table.
+.H 2 "VITTY.C"
+This file contains the resident terminal program. It also has
+the resident terminal clock interrupt routine.
+The routines are:
+.VL 10 2
+.LI \fIversion\fR
+This routine returns the version number.
+.LI \fImain\fR
+This routine is the main resident terminal program. It handles all the
+escape sequences.
+.LI \fInumbers\fR
+This routine reads in the numbers used in an escape sequence.
+.LI \fIgetanum\fR
+This routine reads in a number and says if there are more.
+.LI \fInewline\fR
+This routine handles a newline by scrolling the screen or incrementing
+the line number.
+.LI \fInlcount\fR
+This routine returns the number of newline characters in the receive queue.
+.LI \fIcurse\fR
+This routine draws the cursor.
+.LI \fIgetchar\fR
+This routine waits for a character from the host and then returns it.
+.LI \fIpt\fR
+This routine translates from character coordinates to screen coordinates.
+.LI \fIrect\fR
+This routine does the same as \fIpt\fR except for a rectangle.
+.LI \fIscroll\fR
+This routine scrolls the screen vertically or horizontally for a
+given escape sequence.
+.LI \fIclippt\fR
+This routine clips a point to the screen in character coordinates.
+.LI \fIclear\fR
+This routine clears the screen.
+.LI \fIintroutine\fR
+This is the clock interrupt routine for resident terminal operation.
+It takes characters off the keyboard queue and sends them to the host.
+.LE
+

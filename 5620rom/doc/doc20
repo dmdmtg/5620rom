@@ -1,0 +1,445 @@
+.H 1 "A TOUR THROUGH THE 5620 DMD FIRMWARE"
+.H 2 "ABSTRACT"
+.P
+This section contains a tour through the 5620 DMD firmware universe.
+Familiarity with the 5620 DMD Software Developer Application Guide
+is assumed, as well as familiarity with the standard UNIX\*F
+.FS
+UNIX is a trademark of AT&T Technologies
+.FE
+command make(1) and UNIX shell programming.
+.P
+The standard convention of referring to standard UNIX commands by
+their name followed by their section number from the UNIX System
+User's Manual will be adhered to. DMD commands will be referred to
+by their name followed by "(dmd)", for example, layers(dmd). Manual
+pages for dmd commands can be found in the Application Development
+Guide. The terms 5620 and DMD will be used interchangeable to refer
+to the Teletype 5620 DMD terminal.
+.H 2 "FIRMWARE COMPONENTS"
+.P
+The 5620 DMD User Guide talks about the DMD's three operating environments:
+.BL
+.LI
+Resident terminal
+.LI
+Stand-alone
+.LI
+Layers
+.LE
+.P
+A third sub-environment could be added to this list which is programs that
+run in a layers window. Resident terminal and the terminal half of
+layers are part of firmware.
+The only relationship between stand-alone
+programs and programs that run in a layers window to firmware is that
+they call library routines in firmware.
+.P
+There are three major firmware components:
+.BL
+.LI
+Romterm
+.P
+The term \fBromterm\fR will be used to refer to the software which implements
+the operating environment \fBresident terminal\fR.
+The reason for the name romterm (as well as the name of the operating environment
+resident terminal) is historical. In the Bell Laboratories
+.B blit
+terminal (the predecessor of the 5620), only the default power on
+terminal and library routines were in firmware. Layers was downloaded
+from the host. Romterm (resident terminal) was therefore the terminal that
+was resident in eprom. The 5620 has more eprom space and layers was
+moved into eprom. The names romterm and resident terminal will be retained for
+consistency.
+.LI
+Layersys
+.P
+The term layersys will be used to refer to the terminal half of the operating
+environment layers. The primary component of the host half of layers is
+the xt driver in the UNIX kernel.
+.LI
+Libraries
+.P
+Libraries are being called a third component because they are a
+resource used by both romterm and layersys, as well as
+by stand-alone terminal and programs downloaded into a layers window.
+.LE
+.P
+Romterm and layersys are actually two separate programs, both
+residing in firmware. The two programs could be merged together. The
+advantage of doing this would be that it could save eprom space
+by merging very similar code from the two programs (in particular,
+vitty and windowproc). There would be, however, be two disadvantages.
+First, since the two programs were separately developed,
+there would be numerous problems with symbol name conflicts. Second,
+it is desirable to retain the division because it allows the
+possibility of downloading new versions of layersys, in their entirety,
+as an option to installing new eproms.
+.H 2 "FIRMWARE STRUCTURE"
+.H 3 "FIRMWARE DIRECTORY STRUCTURE"
+.br
+.P
+The firmware directory structure under $ROOT follows:
+.DS CB
+
+include/       
+                sys/           
+lib/  	[initially empty]
+src/           
+                term/          
+                xt/            
+                                layersys/      
+						roms/
+						rdpatch/
+                lib/           
+                                libc/          
+                                libj/          
+                                liblayer/      
+                                libsys/        
+.DE
+.BL
+.LI
+.B $ROOT/include
+.P
+The \fIinclude\fR directory, and it's subdirectory $ROOT/include/sys, contains
+header files used by the firmware. Some of these header files are
+identical to those distributed with the Application Development
+Binary Package to be used to write application programs (either
+stand-alone programs or programs to be downloaded into a window).
+It is advised to maintain these similar directories separately,
+however, because of the problem with future versions of host software
+and firmware writing over each other. This redundancy has a total
+cost of around 100 blocks of disk space.
+.LI
+.B $ROOT/lib
+.P
+The \fIlib\fR directory is empty when it comes off of the tape. When the
+tape is compiled, certain files are written into this directory.
+In particular, the object files for the four libraries are copied
+here when "make(1) install" is run in a library. The term and
+layersys directories access the libraries from this directory. So,
+this is a caution - if you change a library run "make install" before
+recompiling term and layersys or the change will be lost.
+.LI
+.B $ROOT/src/term
+.P
+The \fIterm\fR directory contains the main programs for romterm. This
+includes the terminal bootup routine (bootrom.s) and the screen
+handler (vitty.c).
+.LI
+.B $ROOT/src/xt/layersys
+.P
+The \fIlayersys\fR directory contains the main programs for layersys.
+.LI
+.B $ROOT/src/xt/layersys/roms
+.P
+The \fIroms\fR directory is where the intel hex files suitable for burning
+eproms are built.
+.LI
+.B $ROOT/src/xt/layersys/rdpatch
+.P
+This is the \fIRom Dependent PATCH\fR directory. There are two types
+of layersys patches possible, rom dependent and rom independent.
+Rom dependent patches are much easier to construct, but have
+the shortcoming that they will only work with one version of firmware.
+They can, however, be used for debugging purposes. This directory
+contains some tools for building rom dependent patches. More on
+the layersys patch mechanism later.
+.LI
+.B $ROOT/src/lib/libc
+.P
+The \fIlibc\fR directory contains some standard C language library functions
+which are used by the firmware.
+.LI
+.B $ROOT/src/lib/libj
+.P
+The \fIlibj\fR contains many of the routines supporting graphics
+functions, as well as routines for dynamic memory allocation.
+Many of the routines in this library are documented
+in the 5620 DMD Reference Manual.
+.LI
+.B $ROOT/src/lib/liblayer
+.P
+The \fIliblayer\fR directory contains the library routines to support
+the overlaying bitmap graphics window environment in layers.
+.LI
+.B $ROOT/src/lib/libsys
+.P
+The \fIlibsys\fR directory contains many of the low level system
+functions. This includes the following:
+.BL
+.LI
+Some of the hardware interface routines such as interrupt handlers and hardware
+initialization routines.
+.LI
+Maintenance of queues to transmit characters between interrupt handlers
+and the main program.
+.LI
+Routines to handle processor exceptions.
+.LI
+Routines to handle setup mode and program function keys.
+.LE
+.LE
+.P
+Two special files will be mentioned here because of their importance.
+The run time start up routine for stand-alone programs is the file
+$libsys/l.s. The run time start up routine for programs which download
+into a layersys window is the file $layersys/crtm.s. These files are automatically
+included by dmdcc(dmd); l.s if the -J option is specified, and crtm.s
+is the -J option is not specified\*F.
+.FS
+A handy thing to know is that if dmdcc(dmd) is given the argument \fB-#\fR
+on its command line, it will tell exactly how it is calling cpp(1), the
+compiler, the assembler, etc..
+.FE
+.H 3 "PUTTING TOGETHER THE PIECES OF THE PUZZLE"
+.br
+.P
+Appendix 1 is a map of firmware memory. This section will describe how
+the makefiles build the firmware into this memory map. But first, a
+little about the map.
+.P
+Memory is obviously broken into two main regions, eprom and ram.
+Ram is further divided into screen memory and program memory.
+Eprom starts at address 0.
+Screen memory is at the bottom (low addresses) of ram, and ram
+starts at address 0x700000. The DMD has a 800x1024 bit screen.
+The size of screen memory is therefore (800x1024)/8 == 102400 ==
+0x19000 bytes. Program memory therefore starts to 0x719000.
+.P
+Certain firmware components are bound to absolute addresses in memory.
+The reason for this is partially hardware restrictions, but mostly
+to assure compatibility between different versions of host software
+and firmware (see the section on vector tables below). Bound sections
+are labeled with their fixed absolute addresses in the memory map.
+.P
+Libraries are pulled into firmware as needed by the m32ld(dmd) command
+lines in the makefiles in $term\*F
+.FS
+Directories will be referred to below by the name of the shell
+variables set up to point to them in the setenv shell (see Building
+the Firmware above). For example, $term refers to the term directory
+which is $ROOT/src/term.
+.FE
+and $layersys. All libraries are
+currently being pulled in by term because they are entries in the
+firmware vector table (again see below).
+.P
+A word of caution about reading the firmware makefiles. Many directories
+have m32ld(dmd) "map" files included on the m32ld(dmd) command lines.
+These map files are an integral part of the makefiles and are
+necessary for understanding the correspondence between the makefiles
+and the memory map.
+.P
+Another point of possible confusion is the way
+firmware loads ram resident code at ram addresses. These ram
+sections exist strictly as directions to the loader that certain
+variables exist at certain ram addresses. This is uninitialized
+data (bss), and is not part of the final output of the firmware,
+the intel hex files for burning eproms. So, they are "phantom"
+sections to the firmware. Another trick that firmware can use
+is to link "garbage" sections to a ram address to just get rid
+of them. This is strictly to fool m32ld(dmd), which will not allow
+dumping of garbage sections. More on this below.
+.P
+A useful hint is to look at the map files generated my m32ld(dmd)
+when trying to understand the memory map.
+These are $term/romterm.map, $layersys/layersys.map and $layersys/combined.map.
+.P
+So, let's start building the firmware:
+.BL
+.LI
+.B Romterm
+.P
+The map file $term/map shows that eprom space starts with the file
+lowmem.c. These are the interrupt vectors which point to pcbs\*F
+.FS
+pcbs stands for Process Control BlockS. They contain information about
+interrupts, such as the address of the interrupt handler and the
+interrupt stack. As well as being a hardware feature, they provide a
+convenient grouping of all this information in one place. Pcbs are
+also used for dynamically created (software) processes. The exception
+table is a similar mechanism for exceptions. Both of these mechanisms
+are discussed under Operating System Features in the Software
+Developer Application Guide.
+.FE
+and exception tables in ram. The location of these vectors is
+set in hardware and should not be changed. This is followed by
+the stand-alone vector table, \fBFirm\fR, which is discussed in the
+section on the firmware vector tables below. The address of this
+table is bound to the location 0x200 to maintain compatibility
+between different versions of firmware and host software. Text
+and data for romterm and the libraries follows Firm.
+.P
+The linkage section follows romterm text and data. The purpose of
+the linkage section is to transmit information from layersys
+to romterm. Romterm needs to know certain addresses which cannot
+be determined until layersys is built. An example of this is
+the address of the start up routine for layersys. Romterm needs
+to know this because it must do a call process\*F
+.FS
+The call process instruction is discussed under Operating System
+Features in the Software Developer Application Guide.
+.FE
+to this location to
+boot layersys. As the size of romterm changes, this address will
+change. Since romterm is built before layersys, how can romterm
+know this address? The way it is done is that romterm defines this
+dummy section .linkage. Romterm knows the address of the dummy section.
+When layersys is built, it links an identical file to the same address
+(which is known at the point layersys is built) which has the
+needed addresses filled in. So, romterm knows the address which
+will contain the address of the layersys startup routine.
+.P
+Ram used by romterm includes romterm bss, libraries bss, and pcbs and
+stacks\*F.
+.FS
+The stacks referred to when talking about pcbs and stacks are
+interrupt stacks. There is a stack associated with each pcb
+whose address is specified in the pcb. There is also the stack
+\fBistack\fR which is the stack for nested levels of interrupts that
+is set up during power on reset in the file $layersys/bootrom.s.
+.FE
+Note that pcbs and stacks for all terminal operating environments (resident
+terminal, stand-alone and layers) exist in identical ram locations.
+This is a hardware restriction because the vectors in lowmem.c point
+to these addresses, and these vectors are hard-coded into eprom.
+Overlaying pcbs for different operating environments will be discussed
+later.
+.P
+Notice in the ram map in Appendix 1 that there is some pad (currently
+around 4K) between libraries bss, and the pcbs and stacks. This is for
+future growth. It is necessary because the addresses of pcbs cannot be
+changed in the future (as well as the address of the layersys vector
+table to be discussed later) because it would cause compatibility
+problems between host software and firmware.
+.P
+Pcbs for romterm are copied from eprom to ram during Power On Reset (POR)
+when the terminal is turned on. Romterm pcbs are defined in the
+file $term/pcbs.c. This file contains both the ram resident locations
+defined as arrays called r* and the actual data which is
+copied on POR which is just part of romterm data. So, $term/map
+shows that .bss from pcbs.o is linked into ram, and by default,
+since it is not explicitly defined in the map file, .data from
+pcbs.o is linked into eprom. The code which does the copy is in
+the file $term/bootrom.s. The file $term/pcbs.c also contains
+romterms interrupt stacks. The main process for romterm (the file vitty.c)
+runs as the reset process and therefore uses the reset stack.
+.P
+Another thing which $term/makefile does is to build the trom.o
+file. This is a file of absolute addresses of functions and
+global variables in romterm. Make install copies this file into
+the $layersys directory. Layersys links in the trom.o file and
+this is how it knows the addresses of functions link-loaded by romterm.
+The trom file is constructed in $term/makefile from the romterm name list,
+romterm.nm. When it is constructed, the symbols in the file $term/badname.f
+are deleted. These are the names of routines which would conflict
+with names used in layersys. So, badname.f is another hidden file
+to be aware of. It is possible for a function to have the same name
+in layersys and romterm. So, when looking for a function called from layersys,
+if a function in romterm is found with the same name, do not assume that it
+is the function actually being called without checking badname.f.
+.LI
+.B Layersys
+.P
+The eprom portion of layersys immediately follows romterm. The first thing
+layersys has to do in order to locate itself in the memory
+map is to figure out where romterm ends. This address can change every
+time romterm is recompiled. $layersys/makefile creates a file
+$layersys/Map and then calls the $layersys/fixmap shell program to
+look up the beginning of layersys in $term/romterm.nm (the symbol
+table listing for romterm) and create the file $layersys/map with the
+correct starting address filled in.
+.P
+The address $layersys/fixmap is looking up in $term/romterm.nm is the
+beginning of .linkage. Recall from the discussion of linkage above
+that this actually overlaps romterm.
+.P
+Layersys text and layersys data follow linkage. This is the end
+of code in eprom. There is currently around 30K of empty space at
+the end of the eproms.
+.P
+Ram used by layersys includes the following. First is pcbs and
+stacks from the file $layersys/lpcbs.c. Then, at a fixed ram
+address, is the layersys vector table, \fBSys\fR, which will be discussed in
+the section on firmware vector tables. The layersys vector table
+is the file $layersys/vector.s which is created from the file
+$layersys/vector_tab. This is followed by layersys bss.
+The memory after that is available to layersys
+for offscreen bitmaps and to download programs into windows. The
+variable Free_RAM is defined in $layersys/map to specify where
+this free memory begins. This variable is used by main() in the
+file $layersys/control.c to initialize dynamic memory
+allocation.
+.LI
+.B Combined
+.P
+We now have two separate object modules, $term/romterm and
+$layersys/layersys. The next job is for $layersys/makefile to
+combine these into one object modules so eproms can be burnt.
+Both of these files have already been relocated to their proper
+addresses by m32ld(dmd). So, what has to be done is basically
+"concatenate" the two pieces together. The files are stripped and
+run through m32ld(dmd) with the map file $layersys/comb-map. This
+rather simple function is not something normally done by a
+link-loader. M32ld(dmd) will do it correctly by gives three
+warning messages.
+.P
+The file $layersys/comb-map shows that eprom code is indeed put
+together as described above and shown in the eprom map in
+Appendix 1.
+.P
+The order that $layersys/comb-map arranges ram is not significant
+at this point, because no relocation is being done (the code in
+$term/romterm and $layersys/layersys already knows what the ram
+addresses for its bss are). The only reason a ram section is
+specified in $layersys/comb-map is because m32ld(dmd) insists
+that all sections in the object modules it is working on are
+accounted for. So, it is basically garbage to satisfy m32ld(dmd).
+Notice how the romterm linkage section is just being thrown into
+an arbitrary location, as discussed earlier.
+.LI
+.B "Making Eproms"
+.P
+We now have a file $layersys/combined which contains all of the
+code that will go into eprom. $layersys/roms/makefile will break
+this file into eight intel hex files suitable for burning eproms.
+.LE
+.P
+Something that is touched on in the above discussion but not
+really explained is that ram from pcbs and stacks up (addresses
+starting at 0x71C000) is used differently in the three operating
+environments (resident terminal, stand-alone and layers). The ram
+map in Appendix 1 details this.
+.P
+The ram after pcbs and stacks is unused by resident terminal.
+Ram for layers is laid out pretty much as detailed above. Note that there
+is a small amount of pad in layersys bss just declared as an array
+in the file $layersys/mainstk.c.
+.P
+Pcbs and stacks for the stand-alone environment are in the file $DMD/lib/jpcbs.c
+on the Application Development Binary host software tape. This is not
+on the firmware tape because it is part of the host software - the
+pcbs and stacks are downloaded from the host. Note that there is a
+makefile in $DMD/lib that must be run when the Application Development
+tape is first installed or the location of the $DMD/lib directory
+changes. Following pcbs and stacks is mainstk and the memory 
+for the stand-alone program code. Mainstk is the default stack
+that is used by a stand-alone program.
+.P
+You may be wondering where the main stack for layersys is located.
+Mainstk for layersys does not have to be in any fixed location, it just has to
+be pointed to by the main pcb. Mainstk for layers is just an array
+in $layersys/mainstk.c. In the layers environment, mainstk is only used by the
+boot process (main() in $layersys/control.c).
+.P
+The final page of appendix 1 is a detail of the pcbs and stacks area for
+the three operating environment. Again note that the addresses in this
+pcbs and stacks map are fixed in order to maintain compatibility between
+different versions of firmware and host software. The files which
+define the layouts for the different environments are, again,
+$term/pcbs.c, $layersys/lpcbs.c and $DMD/lib/jpcbs.c. Note that
+the reset pcb is not used in layers or stand-alone. There is no
+reset process in these environments. Note also that the main pcb in
+resident terminal is not actually used. The main process for resident
+terminal runs as the reset process.

@@ -1,0 +1,28 @@
+
+
+	      AT&T TELETYPE 5620 DMD FIRMWARE SOURCE TAPE
+
+It is assumed that the firmware source tape is maintained in a seperate
+directory hierarchy from the host software. Not doing this can cause
+future problems with include files writing over each other.
+
+TO MAKE:
+edit the shell setenv in this directory to change DMDCC to locally
+	defined path
+
+$ . setenv
+$ cp $DMD/lib/comp lib/comp
+$ cp $DMD/lib/cpp lib/cpp
+$ cp $DMD/lib/optim lib/optim
+$ cp $DMD/bin/m32as bin/m32as
+$ make.firm
+
+Will expand from around 2200 blocks to almost 7000 blocks. Takes
+1/2 hour on an unloaded 3B20S - much longer on loaded machine.
+
+Read the setenv and make.firm shells for important hints.
+Look in the directory doc for more information. The files
+in src/xt/layersys/roms/save are intel hex files suitable
+for burning eproms which will work the same as the ones
+released for version 2.0.
+

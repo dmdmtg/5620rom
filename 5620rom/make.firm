@@ -1,0 +1,59 @@
+#
+# make.firm shell - make the 5620 firmware universe
+#
+
+#
+# check that critical environment variables are set
+#
+if [ \( "$DMDCC" = "" \) ]
+then
+	echo DMDCC and DMDSGS variables must be set and exported
+	echo before running make.firm
+	exit
+fi
+
+#
+# make the librarys - the librarys do not have to be made in any particular
+# order (more than one library could be made concurrently), but all librarys
+# must be made before anything else is made
+#
+echo making libj
+(cd src/lib/libj ; make install)
+echo making libc
+(cd src/lib/libc ; make install)
+echo making liblayer
+(cd src/lib/liblayer ; make install)
+echo making libsys
+(cd src/lib/libsys ; make install)
+
+#
+# make the rest -
+#	term must be made before layersys
+#	layersys must be made before patch or roms
+#	patch and roms do not have to be made in order (could be made
+#		concurrently)
+#
+echo making term
+(cd src/term ; make install)
+echo making layersys
+(cd src/xt/layersys ; make install)
+echo making roms
+(cd src/xt/layersys/roms ; make)
+#
+# test the produces roms with what should be the result
+#
+echo comparing hex files
+echo up to 5 bytes different in each file is ok --- this is the time stamp
+for i in combined.000 combined.001 combined.100 combined.101 combined.200 combined.201 combined.300 combined.301
+do
+	case `cmp -l ./src/xt/layersys/roms/save/$i ./src/xt/layersys/roms/$i | wc | sed 's/^[ 	]*//
+    s/ .*//'` in
+	[0-5])	echo hex file $i compares ok ;;
+	*)	echo hex file $i DOES NOT COMPARE ;;
+	esac
+done
+
+
+echo DONE
+echo If successful, you can remove the save directory.
+

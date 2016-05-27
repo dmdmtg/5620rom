@@ -1,0 +1,24 @@
+MEMORY {
+	$rom$(RXI):	org=0x0,	len=0x20000
+	$ram$:		org=0x700000,	len=0x40000
+}
+
+SECTIONS {
+	.vecs 0x0 : { } >$rom$
+    	GROUP 0x200 : {
+		.vtab : { ../../term/romterm(.vtab) }
+		.rtext : { ../../term/romterm(.text)  }
+		.rdata : { ../../term/romterm(.data)  } 
+		.linkage : { layersys(.linkage) }
+		.ltext : { layersys(.text) }
+		.ldata : { layersys(.data) }
+    	       } >$rom$
+	GROUP 0x719000 : {
+		.rbss : { ../../term/romterm(.bss) }  
+	     } >$ram$
+	GROUP 0x71c000 : {
+		.bss_stk : { } 
+	    } >$ram$
+	.pcbs : { } >$ram$
+	.garbage : { ../../term/romterm(.linkage) }
+}

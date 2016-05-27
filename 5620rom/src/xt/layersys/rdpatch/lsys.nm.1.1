@@ -1,0 +1,574 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1985,1986,1987,1988,1989,1990,1991,1992   AT&T	
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+
+
+Symbols from /usr/add-on/dmd2.0/lib/lsym.8;7;3:
+
+Name                  Value     Class       Type     Size    Line  Section File
+
+boot                |0x0000b348|extern|       int( )|0x02d1|     |.text   |
+bldargs             |0x0000b61c|extern|       int( )|0x0042|     |.text   |
+setdata             |0x0000b660|extern|       int( )|0x0020|     |.text   |
+getchar             |0x0000b680|extern|       int( )|0x0063|     |.text   |
+getlong             |0x0000b6e4|extern|       int( )|0x002d|     |.text   |
+shutdown            |0x0000b714|extern|       int( )|0x0069|     |.text   |
+freemem             |0x0000b780|extern|       int( )|0x001c|     |.text   |
+clockrou            |0x0000b79c|extern|       int( )|0x0254|     |.text   |
+givemous            |0x0000b9f0|extern|       int( )|0x0070|     |.text   |
+sleep               |0x0000ba60|extern|       int( )|0x006f|     |.text   |
+alarm               |0x0000bad0|extern|       int( )|0x0023|     |.text   |
+main                |0x0000baf4|extern|       int( )|0x01b9|     |.text   |
+bttns               |0x0000bcb0|extern|       int( )|0x001e|     |.text   |
+Sw                  |0x0000bcd0|extern|       int( )|0x0041|     |.text   |
+control             |0x0000bd14|extern|       int( )|0x0151|     |.text   |
+sysrun              |0x0000be68|extern|       int( )|0x0013|     |.text   |
+New                 |0x0000be7c|extern|       int( )|0x0013|     |.text   |
+Psend               |0x0000be90|extern|       int( )|0x0036|     |.text   |
+Exit                |0x0000bec8|extern|       int( )|0x003d|     |.text   |
+Delete              |0x0000bf08|extern|       int( )|0x0059|     |.text   |
+delproc             |0x0000bf64|extern|       int( )|0x0029|     |.text   |
+Top                 |0x0000bf90|extern|       int( )|0x0016|     |.text   |
+Bottom              |0x0000bfa8|extern|       int( )|0x003b|     |.text   |
+Current             |0x0000bfe4|extern|       int( )|0x001b|     |.text   |
+canon               |0x0000c000|extern|struct-Rectangl( )|0x00a3|     |.text   |
+getrect             |0x0000c0a4|extern|struct-Rectangl( )|0x0144|     |.text   |
+Reshape             |0x0000c1e8|extern|       int( )|0x0038|     |.text   |
+reshape             |0x0000c220|extern|       int( )|0x0141|     |.text   |
+Move                |0x0000c364|extern|       int( )|0x01e9|     |.text   |
+move                |0x0000c550|extern|       int( )|0x0171|     |.text   |
+debug               |0x0000c6c4|extern|*struct-Proc( )|0x006e|     |.text   |
+dobutton            |0x0000c734|extern|       int( )|0x00b8|     |.text   |
+whichpro            |0x0000c7ec|extern|       int( )|0x0048|     |.text   |
+whichbut            |0x0000c834|extern|       int( )|0x0033|     |.text   |
+newwindo            |0x0000c868|extern|       int( )|0x0094|     |.text   |
+sendncha            |0x0000c8fc|extern|          ( )|0x003b|     |.text   |
+sendpkt             |0x0000c938|extern|       int( )|0x009f|     |.text   |
+mpxnewwi            |0x0000c9d8|extern|       int( )|0x0088|     |.text   |
+mpxsendc            |0x0000ca60|extern|       int( )|0x003c|     |.text   |
+mpxkbdch            |0x0000ca9c|extern|       int( )|0x002d|     |.text   |
+mpxkbdfl            |0x0000cacc|extern|       int( )|0x00b9|     |.text   |
+mpxdelwi            |0x0000cb88|extern|       int( )|0x0015|     |.text   |
+mpxublk             |0x0000cba0|extern|       int( )|0x005f|     |.text   |
+mpxcore             |0x0000cc00|extern|       int( )|0x0015|     |.text   |
+outline             |0x0000cc18|extern|       int( )|0x00a3|     |.text   |
+min                 |0x0000ccbc|extern|       int( )|0x0016|     |.text   |
+max                 |0x0000ccd4|extern|       int( )|0x0016|     |.text   |
+whichlay            |0x0000ccec|extern|*struct-Layer( )|0x0049|     |.text   |
+tolayer             |0x0000cd38|extern|       int( )|0x0088|     |.text   |
+shade               |0x0000cdc0|extern|       int( )|0x003a|     |.text   |
+clear               |0x0000cdfc|extern|       int( )|0x0072|     |.text   |
+demux               |0x0000ce70|extern|       int( )|0x005f|     |.text   |
+recvchar            |0x0000ced0|extern|       int( )|0x00f8|     |.text   |
+doctl               |0x0000cfc8|extern|       int( )|0x01ec|     |.text   |
+exec                |0x0000d1b4|extern|       int( )|0x0051|     |.text   |
+zombexec            |0x0000d208|extern|       int( )|0x0051|     |.text   |
+windowst            |0x0000d25c|extern|       int( )|0x000c|     |.text   |
+execsw              |0x0000d268|extern|       int( )|0x001f|     |.text   |
+zombsw              |0x0000d288|extern|       int( )|0x002a|     |.text   |
+newproc             |0x0000d2b4|extern|*struct-Proc( )|0x0065|     |.text   |
+restart             |0x0000d31c|extern|       int( )|0x005e|     |.text   |
+sw                  |0x0000d37c|extern|       int( )|0x0021|     |.text   |
+switcher            |0x0000d3a0|extern|       int( )|0x007e|     |.text   |
+swinit              |0x0000d420|extern|       int( )|0x0075|     |.text   |
+trap                |0x0000d498|extern|       int( )|0x01d6|     |.text   |
+copy                |0x0000d670|extern|       int( )|0x0066|     |.text   |
+itox                |0x0000d6d8|extern|     *char( )|0x004b|     |.text   |
+error               |0x0000d724|extern|       int( )|0x0096|     |.text   |
+transfor            |0x0000d7bc|extern|struct-Point( )|0x007b|     |.text   |
+rtransfo            |0x0000d838|extern|struct-Rectangl( )|0x0048|     |.text   |
+Ualloc              |0x0000d880|extern|     *char( )|0x0018|     |.text   |
+Uballoc             |0x0000d898|extern|*struct-Bitmap( )|0x0023|     |.text   |
+Ujinit              |0x0000d8bc|extern|       int( )|0x001c|     |.text   |
+Ujline              |0x0000d8d8|extern|       int( )|0x004f|     |.text   |
+Ujlineto            |0x0000d928|extern|       int( )|0x0028|     |.text   |
+Ujmove              |0x0000d950|extern|       int( )|0x0032|     |.text   |
+Ujmoveto            |0x0000d984|extern|       int( )|0x0012|     |.text   |
+Ujpoint             |0x0000d998|extern|       int( )|0x0030|     |.text   |
+Ujrectf             |0x0000d9c8|extern|       int( )|0x0035|     |.text   |
+Ujsegmen            |0x0000da00|extern|       int( )|0x00a5|     |.text   |
+Ujstring            |0x0000daa8|extern|struct-Point( )|0x0103|     |.text   |
+Ujtextur            |0x0000dbac|extern|       int( )|0x0037|     |.text   |
+Uexit               |0x0000dbe4|extern|       int( )|0x0021|     |.text   |
+Urequest            |0x0000dc08|extern|       int( )|0x007a|     |.text   |
+Urcvchar            |0x0000dc84|extern|       int( )|0x0022|     |.text   |
+Ukbdchar            |0x0000dca8|extern|       int( )|0x002f|     |.text   |
+Uown                |0x0000dcd8|extern|       int( )|0x005c|     |.text   |
+Uwait               |0x0000dd34|extern|       int( )|0x0084|     |.text   |
+Ucursall            |0x0000ddb8|extern|       int( )|0x0065|     |.text   |
+Ucursset            |0x0000de20|extern|       int( )|0x0031|     |.text   |
+Ucursinh            |0x0000de54|extern|       int( )|0x0066|     |.text   |
+Ucursswi            |0x0000debc|extern|*struct-Texture1( )|0x008d|     |.text   |
+string              |0x0000df4c|extern|struct-Point( )|0x014e|     |.text   |
+Usendcha            |0x0000e09c|extern|       int( )|0x0049|     |.text   |
+Upoint              |0x0000e0e8|extern|       int( )|0x004d|     |.text   |
+Ubitblt             |0x0000e138|extern|       int( )|0x0072|     |.text   |
+Urectf              |0x0000e1ac|extern|       int( )|0x0050|     |.text   |
+Usegment            |0x0000e1fc|extern|       int( )|0x0055|     |.text   |
+Utexture            |0x0000e254|extern|       int( )|0x0054|     |.text   |
+Uscreens            |0x0000e2a8|extern|       int( )|0x003f|     |.text   |
+windowpr            |0x00722c10|extern|       int( )|0x0993|     |.wp     |
+numbers             |0x007235a4|extern|       int( )|0x0053|     |.wp     |
+getanum             |0x007235f8|extern|       int( )|0x0081|     |.wp     |
+curse               |0x0072367c|extern|       int( )|0x001a|     |.wp     |
+readchar            |0x00723698|extern|       int( )|0x01cc|     |.wp     |
+pt                  |0x00723864|extern|struct-Point( )|0x007a|     |.wp     |
+RECT                |0x007238e0|extern|struct-Rectangl( )|0x00e2|     |.wp     |
+lscroll             |0x007239c4|extern|       int( )|0x0305|     |.wp     |
+clippt              |0x00723ccc|extern|       int( )|0x005c|     |.wp     |
+writec              |0x00723d28|extern|       int( )|0x0237|     |.wp     |
+newline             |0x00723f60|extern|       int( )|0x0156|     |.wp     |
+lscrolx             |0x007240b8|extern|       int( )|0x0084|     |.wp     |
+nlcount             |0x0072413c|extern|       int( )|0x0088|     |.wp     |
+agent               |0x0000e2e8|extern|       int( )|0x03ed|     |.text   |
+checkrec            |0x0000e6d8|extern|struct-Rectangl( )|0x0078|     |.text   |
+kbdproc             |0x0000f5ec|static|             |      |     |.data   |
+debugger            |0x0000f5f0|static|             |      |     |.data   |
+second              |0x0000f5f4|static|             |      |     |.data   |
+ticks               |0x0000f5f8|static|             |      |     |.data   |
+ticks0              |0x0000f5fc|static|             |      |     |.data   |
+usermous            |0x0000f614|static|             |      |     |.data   |
+kbdlistp            |0x0000f61c|static|             |      |     |.data   |
+hst_init            |0x0000f620|static|             |      |     |.data   |
+sendbusy            |0x0000f634|static|             |      |     |.data   |
+rebootfl            |0x0000f63c|static|             |      |     |.data   |
+last                |0x0000f640|static|             |      |     |.data   |
+patcheds            |0x0000f644|static|             |      |     |.data   |
+patch               |0x0000f648|static|             |      |     |.data   |
+end_vt              |0x0000f650|static|             |      |     |.data   |
+crc                 |0x0000e7b4|extern|       int( )|0x00b4|     |.text   |
+pinit               |0x0000e868|extern|       int( )|0x00cd|     |.text   |
+precv               |0x0000e938|extern|          ( )|0x0261|     |.text   |
+Control             |0x0000eb9c|extern|          ( )|0x015d|     |.text   |
+Reply               |0x0000ecfc|extern|          ( )|0x0074|     |.text   |
+Retry               |0x0000ed70|extern|       int( )|0x0076|     |.text   |
+psend               |0x0000ede8|extern|       int( )|0x0111|     |.text   |
+ptimeout            |0x0000eefc|extern|          ( )|0x00f0|     |.text   |
+back                |0x0000f08f|static|             |      |     |.text   |
+mous_chk            |0x0000f0c5|static|             |      |     |.text   |
+msvid_ex            |0x0000f0dd|static|             |      |     |.text   |
+Free_RAM            |0x007241c4|extern|          int|      |     |.wp     |
+cup                 |0x0000f124|extern|struct-Texture1|0x0020|     |.data   |
+P                   |0x0071d700|extern|             |      |     |.lvecs  |
+Sys                 |0x0071d700|extern|             |      |     |.lvecs  |
+freeall             |0x0000773c|extern|             |      |     |        |
+Rect                |0x00008f70|extern|             |      |     |        |
+Lbox                |0x0000461c|extern|             |      |     |        |
+kbdproc             |0x0071d9a0|extern|             |      |     |.lvecs  |
+debugger            |0x0071d9a4|extern|             |      |     |.lvecs  |
+qclear              |0x00005314|extern|             |      |     |        |
+mouse               |0x0071951c|extern|             |      |     |        |
+ticks0              |0x0071d9b0|extern|             |      |     |.lvecs  |
+ticks               |0x0071d9ac|extern|             |      |     |.lvecs  |
+second              |0x0071d9a8|extern|             |      |     |.lvecs  |
+proctab             |0x0071ddcc|extern|struct-Proc[8]|0x4a60|     |.bss    |
+queues              |0x0071a598|extern|             |      |     |        |
+qgetc               |0x000052bc|extern|             |      |     |        |
+qputc               |0x000051e8|extern|             |      |     |        |
+kbdrepea            |0x0071a5c4|extern|             |      |     |        |
+kbdrpt              |0x00006428|extern|             |      |     |        |
+spl1                |0x000018f9|extern|             |      |     |        |
+spl0                |0x000018ec|extern|             |      |     |        |
+pconvs              |0x0071da08|extern|struct-Pchannel[8]|0x0340|     |.bss    |
+pconfig             |0x0071dd48|extern|struct-Pconfig|0x0014|     |.bss    |
+menufn              |0x0071dd5c|extern| (*int[9])( )|0x0024|     |.bss    |
+windowme            |0x0071dd80|extern|  struct-Menu|0x000c|     |.bss    |
+kbdlist             |0x0071dd8c|extern|     char[64]|0x0040|     |.bss    |
+bullseye            |0x0000f144|extern|struct-Texture1|0x0020|     |.data   |
+skull               |0x0000f164|extern|struct-Texture1|0x0020|     |.data   |
+boxcurs             |0x0000f184|extern|struct-Texture1|0x0020|     |.data   |
+menutext            |0x0000f1a4|extern|     *char[0]|      |     |.data   |
+shademap            |0x0000f1c8|extern|struct-Texture|0x0080|     |.data   |
+usermous            |0x0071d9c8|extern|             |      |     |.lvecs  |
+kbdlistp            |0x0071d9d0|extern|             |      |     |.lvecs  |
+qinit               |0x000051b4|extern|             |      |     |        |
+baud_spe            |0x0000a394|extern|             |      |     |        |
+aciainit            |0x000046b8|extern|             |      |     |        |
+binit               |0x00004920|extern|             |      |     |        |
+kbdinit             |0x00005e4c|extern|             |      |     |        |
+display             |0x00009ca8|extern|             |      |     |        |
+Lgrey               |0x00004680|extern|             |      |     |        |
+cursinit            |0x00004d84|extern|             |      |     |        |
+maxaddr             |0x0000a37c|extern|             |      |     |        |
+allocini            |0x00007610|extern|             |      |     |        |
+gcinit              |0x00006d54|extern|             |      |     |        |
+hst_init            |0x0071d9d4|extern|             |      |     |.lvecs  |
+cursswit            |0x00004e64|extern|             |      |     |        |
+lback               |0x00719514|extern|             |      |     |        |
+Pt                  |0x00008f87|extern|             |      |     |        |
+cursset             |0x00004cec|extern|             |      |     |        |
+Rpt                 |0x00008f94|extern|             |      |     |        |
+sendbusy            |0x0071d9e8|extern|             |      |     |.lvecs  |
+trdisabl            |0x0000488c|extern|             |      |     |        |
+trenable            |0x00004868|extern|             |      |     |        |
+splx                |0x00001912|extern|             |      |     |        |
+aciatrin            |0x00004794|extern|             |      |     |        |
+jmoveto             |0x00008fa4|extern|             |      |     |        |
+jline               |0x0000900c|extern|             |      |     |        |
+lfront              |0x00719510|extern|             |      |     |        |
+rebootfl            |0x0071d9f0|extern|             |      |     |.lvecs  |
+reboot              |0x00001808|extern|             |      |     |        |
+_start              |0x0000efec|extern|             |      |     |.text   |
+alenvtab            |0x00000304|extern|             |      |     |        |
+RSys                |0x0000f34c|extern|             |      |     |.data   |
+swstk               |0x0072282c|extern|      int[16]|0x0040|     |.bss    |
+swpcbp              |0x0072286c|extern|      int[20]|0x0050|     |.bss    |
+last                |0x0071d9f4|extern|             |      |     |.lvecs  |
+trapmsg             |0x0000f2b0|extern|     *char[0]|      |     |.data   |
+patcheds            |0x0071d9f8|extern|             |      |     |.lvecs  |
+patch               |0x0071d9fc|extern|             |      |     |.lvecs  |
+jrectf              |0x000077cc|extern|             |      |     |        |
+realallo            |0x00007658|extern|             |      |     |        |
+realball            |0x00007438|extern|             |      |     |        |
+eqpt                |0x00008f56|extern|             |      |     |        |
+defont              |0x0000ae08|extern|             |      |     |        |
+bitblt              |0x00007a24|extern|             |      |     |        |
+lblt                |0x00003abc|extern|             |      |     |        |
+lbitblt             |0x00003828|extern|             |      |     |        |
+screensw            |0x000078a8|extern|             |      |     |        |
+insidedg            |0x0000f320|extern|struct-Rectangl|0x0008|     |.data   |
+excep_no            |0x0000e750|extern|             |      |     |.text   |
+excep_st            |0x0000e77c|extern|             |      |     |.text   |
+excep_in            |0x0000e795|extern|             |      |     |.text   |
+excep_pr            |0x0000e79d|extern|             |      |     |.text   |
+add                 |0x00008eac|extern|             |      |     |        |
+addr                |0x00008e88|extern|             |      |     |        |
+bfree               |0x00007528|extern|             |      |     |        |
+dellayer            |0x00003b88|extern|             |      |     |        |
+div                 |0x00008ee8|extern|             |      |     |        |
+eqrect              |0x00008f60|extern|             |      |     |        |
+free                |0x00007724|extern|             |      |     |        |
+inset               |0x00008eca|extern|             |      |     |        |
+nap                 |0x00004e44|extern|             |      |     |        |
+menuhit             |0x00007250|extern|             |      |     |        |
+mul                 |0x00008f04|extern|             |      |     |        |
+newlayer            |0x00003e14|extern|             |      |     |        |
+ptinrect            |0x000075ec|extern|             |      |     |        |
+raddp               |0x00008f3b|extern|             |      |     |        |
+rectXrec            |0x000077a8|extern|             |      |     |        |
+rectclip            |0x0000783c|extern|             |      |     |        |
+rsubp               |0x00008f20|extern|             |      |     |        |
+strwidth            |0x00008c34|extern|             |      |     |        |
+sub                 |0x00008ebb|extern|             |      |     |        |
+upfront             |0x00004474|extern|             |      |     |        |
+realgcal            |0x00006d80|extern|             |      |     |        |
+gcfree              |0x00006e4c|extern|             |      |     |        |
+lpoint              |0x00003c44|extern|             |      |     |        |
+lrectf              |0x00003b5c|extern|             |      |     |        |
+lsegment            |0x00003d74|extern|             |      |     |        |
+ltexture            |0x00003d08|extern|             |      |     |        |
+realtime            |0x0000f119|extern|             |      |     |.text   |
+cursinhi            |0x00004a58|extern|             |      |     |        |
+cursallo            |0x00004ac8|extern|             |      |     |        |
+jstrwidt            |0x00008c1c|extern|             |      |     |        |
+host_int            |0x0000f0ea|extern|             |      |     |.text   |
+jstring             |0x00006fb0|extern|             |      |     |        |
+key_int             |0x0000f0e1|extern|             |      |     |.text   |
+msvid_in            |0x0000f0a3|extern|             |      |     |.text   |
+out_int             |0x0000f110|extern|             |      |     |.text   |
+version             |0x00000478|extern|             |      |     |        |
+ringbell            |0x00005ee0|extern|             |      |     |        |
+psendcha            |0x00005f1c|extern|             |      |     |        |
+end_vt              |0x0071da04|extern|             |      |     |.lvecs  |
+crc16t_3            |0x00009cbc|extern|             |      |     |        |
+pconvsen            |0x007228bc|extern|*struct-Pchannel|0x0068|     |.bss    |
+pseqtabl            |0x007228c0|extern|    Uchar[16]|0x0010|     |.bss    |
+Zheader             |0x007228d0|extern|struct-P_header|0x0004|     |.bss    |
+precvpkt            |0x007228d4|extern|struct-Pktstate|0x002c|     |.bss    |
+Pkp                 |0x00722900|extern|*struct-Packet|0x0028|     |.bss    |
+pbufp               |0x00722904|extern|        *char|      |     |.bss    |
+Sbufp               |0x00722908|extern|        *char|      |     |.bss    |
+dcount              |0x0072290c|extern|        short|      |     |.bss    |
+Scount              |0x0072290e|extern|        short|      |     |.bss    |
+nextpkt             |0x00001930|extern|             |      |     |        |
+Ngetc               |0x000019ec|extern|             |      |     |        |
+crcbyte             |0x000019c1|extern|             |      |     |        |
+datard              |0x00001956|extern|             |      |     |        |
+datawr              |0x00001999|extern|             |      |     |        |
+Nputc               |0x00001a15|extern|             |      |     |        |
+wrloop              |0x0000199f|extern|             |      |     |        |
+Ngetc1              |0x000019f8|extern|             |      |     |        |
+Nputc1              |0x00001a24|extern|             |      |     |        |
+savepcb             |0x00001a91|extern|             |      |     |        |
+setpcb              |0x00001d23|extern|             |      |     |        |
+REXIT               |0x00001e21|extern|             |      |     |        |
+HIPAT               |0x00001e5d|extern|             |      |     |        |
+BACKLP1             |0x00001e66|extern|             |      |     |        |
+BBACK1              |0x00001e85|extern|             |      |     |        |
+HIPAT2              |0x00001e9d|extern|             |      |     |        |
+BBACK2              |0x00001eb8|extern|             |      |     |        |
+SLOWPAT             |0x00001ec7|extern|             |      |     |        |
+LMLOOP              |0x00001ecd|extern|             |      |     |        |
+LOWPAT              |0x00001ee3|extern|             |      |     |        |
+BACKLP2             |0x00001eec|extern|             |      |     |        |
+BBACK3              |0x00001f0b|extern|             |      |     |        |
+LOWPAT2             |0x00001f23|extern|             |      |     |        |
+BBACK4              |0x00001f3e|extern|             |      |     |        |
+HMTOLM              |0x00001f4d|extern|             |      |     |        |
+HMLOOP              |0x00001f53|extern|             |      |     |        |
+EXIT                |0x00001f69|extern|             |      |     |        |
+LEAVE               |0x0000202b|extern|             |      |     |        |
+DIPAT               |0x00001fa5|extern|             |      |     |        |
+DACKLP1             |0x00001fae|extern|             |      |     |        |
+DBACK1              |0x00001fcd|extern|             |      |     |        |
+DUP1                |0x00001fdf|extern|             |      |     |        |
+DUP2                |0x00001fe2|extern|             |      |     |        |
+DIPAT2              |0x00001ff3|extern|             |      |     |        |
+DBACK2              |0x0000200e|extern|             |      |     |        |
+DUP3                |0x00002020|extern|             |      |     |        |
+DUP4                |0x00002023|extern|             |      |     |        |
+bobclr              |0x00002d38|extern|             |      |     |        |
+vectors             |0x00002d4a|extern|             |      |     |        |
+setpcbp             |0x00002d5c|extern|             |      |     |        |
+Pass                |0x0000377c|extern|             |      |     |        |
+lessthan            |0x00003a1c|extern|             |      |     |        |
+Lblt                |0x00003a6c|extern|             |      |     |        |
+Lrectf              |0x00003b38|extern|             |      |     |        |
+Ltexture            |0x00003cdc|extern|             |      |     |        |
+Lsegment            |0x00003d38|extern|             |      |     |        |
+Newlayer            |0x00003de8|extern|             |      |     |        |
+greymap             |0x0000a108|extern|             |      |     |        |
+update              |0x00004af4|extern|             |      |     |        |
+setxy               |0x00004b50|extern|             |      |     |        |
+flipcurs            |0x00004d14|extern|             |      |     |        |
+c_ul                |0x0000a188|extern|             |      |     |        |
+c_ll                |0x0000a1a8|extern|             |      |     |        |
+c_ur                |0x0000a1c8|extern|             |      |     |        |
+c_lr                |0x0000a1e8|extern|             |      |     |        |
+compact             |0x00006eb8|extern|             |      |     |        |
+r                   |0x0000a50c|extern|             |      |     |        |
+flip                |0x000073e4|extern|             |      |     |        |
+ones                |0x0000a514|extern|             |      |     |        |
+BW_XORLO            |0x00008321|extern|             |      |     |        |
+BW_XORIN            |0x00008366|extern|             |      |     |        |
+bits                |0x0000a614|extern|             |      |     |        |
+strike              |0x0000adf4|extern|             |      |     |        |
+code                |0x000093e8|extern|             |      |     |        |
+CRX                 |0x00719028|extern|             |      |     |        |
+C_SRX               |0x00719030|extern|             |      |     |        |
+Dest                |0x00719050|extern|             |      |     |        |
+ENDAREA             |0x0071b0d4|extern|             |      |     |        |
+Firm                |0x00000200|extern|             |      |     |        |
+Jcliplin            |0x00009420|extern|             |      |     |        |
+Jdmajor             |0x0071b0ec|extern|             |      |     |        |
+Jdminor             |0x0071b0ee|extern|             |      |     |        |
+Jmajor              |0x000091d4|extern|             |      |     |        |
+Jminor              |0x00009174|extern|             |      |     |        |
+Jsetdda             |0x00009388|extern|             |      |     |        |
+Jsetline            |0x00009264|extern|             |      |     |        |
+Jslopene            |0x0071b0f2|extern|             |      |     |        |
+Jxmajor             |0x0071b0f0|extern|             |      |     |        |
+MR1_2X              |0x0071902c|extern|             |      |     |        |
+NAVAIL              |0x0071b0d0|extern|             |      |     |        |
+NLONGS              |0x0071b0cc|extern|             |      |     |        |
+OPCR_I              |0x00719038|extern|             |      |     |        |
+Pf_edit             |0x0071a5d4|extern|             |      |     |        |
+PtCurren            |0x0071b0f4|extern|             |      |     |        |
+Rlayerop            |0x00003538|extern|             |      |     |        |
+Src                 |0x007192ac|extern|             |      |     |        |
+T_RHRX              |0x00719034|extern|             |      |     |        |
+_line               |0x00009664|extern|             |      |     |        |
+abs                 |0x00009c3c|extern|             |      |     |        |
+aciapaws            |0x000048b0|extern|             |      |     |        |
+addRect             |0x000043a8|extern|             |      |     |        |
+addobs              |0x00004074|extern|             |      |     |        |
+alloc               |0x00007710|extern|             |      |     |        |
+allocb              |0x0071b0e0|extern|             |      |     |        |
+allocend            |0x0071b0dc|extern|             |      |     |        |
+allocsta            |0x0071b0d8|extern|             |      |     |        |
+always              |0x00002ef4|extern|             |      |     |        |
+auto1               |0x00004dbc|extern|             |      |     |        |
+auto2               |0x00005ffc|extern|             |      |     |        |
+auto4               |0x0000493c|extern|             |      |     |        |
+balloc              |0x00007508|extern|             |      |     |        |
+blank               |0x000032c0|extern|             |      |     |        |
+blocked             |0x0071900c|extern|             |      |     |        |
+board               |0x00719024|extern|             |      |     |        |
+board1              |0x00719025|extern|             |      |     |        |
+board2              |0x00719026|extern|             |      |     |        |
+botbits             |0x0000b2b0|extern|             |      |     |        |
+bram                |0x00002050|extern|             |      |     |        |
+bramgets            |0x00005c84|extern|             |      |     |        |
+bramputs            |0x00005ce0|extern|             |      |     |        |
+burn1               |0x00719018|extern|             |      |     |        |
+cap_setu            |0x00006c8c|extern|             |      |     |        |
+caps_msg            |0x00006b4c|extern|             |      |     |        |
+cbufs               |0x00719598|extern|             |      |     |        |
+ceil                |0x00009138|extern|             |      |     |        |
+checkbra            |0x0000346c|extern|             |      |     |        |
+color               |0x000033cc|extern|             |      |     |        |
+cppcbs              |0x00002d28|extern|             |      |     |        |
+cur                 |0x00719000|extern|             |      |     |        |
+curpos              |0x0000a384|extern|             |      |     |        |
+cursblt             |0x0000496c|extern|             |      |     |        |
+cursbm              |0x0071957c|extern|             |      |     |        |
+cursor              |0x0071954c|extern|             |      |     |        |
+curtabp             |0x00719548|extern|             |      |     |        |
+delta               |0x00719508|extern|             |      |     |        |
+disconne            |0x000048c8|extern|             |      |     |        |
+displays            |0x00005d38|extern|             |      |     |        |
+dispstat            |0x0071a5d0|extern|             |      |     |        |
+draw_ver            |0x00001bf0|extern|             |      |     |        |
+drawchar            |0x00002f0c|extern|             |      |     |        |
+drawmenu            |0x00006ff4|extern|             |      |     |        |
+dtr                 |0x00719518|extern|             |      |     |        |
+dtrctl              |0x00004834|extern|             |      |     |        |
+duart               |0x00002160|extern|             |      |     |        |
+edata               |0x0000b334|extern|             |      |     |        |
+etext               |0x00009c8c|extern|             |      |     |        |
+first_le            |0x00000000|extern|             |      |     |        |
+flicker             |0x000033f0|extern|             |      |     |        |
+floor               |0x000090fc|extern|             |      |     |        |
+freelist            |0x0071a5bc|extern|             |      |     |        |
+freeobs             |0x00004434|extern|             |      |     |        |
+gcalloc             |0x00006e34|extern|             |      |     |        |
+gcfreeal            |0x00006e80|extern|             |      |     |        |
+getnum              |0x000010c4|extern|             |      |     |        |
+hoststk             |0x0071cc10|extern|             |0x0190|     |        |
+init_pcb            |0x00009cfc|extern|             |      |     |        |
+ins_str             |0x00005dd0|extern|             |      |     |        |
+intcnt              |0x0071904c|extern|             |      |     |        |
+interrup            |0x00719590|extern|             |      |     |        |
+intr                |0x0000008c|extern|             |      |     |        |
+istack              |0x0071c3f0|extern|             |0x0100|     |        |
+jlineto             |0x00008fb4|extern|             |      |     |        |
+jmove               |0x00008fe4|extern|             |      |     |        |
+jpoint              |0x00006f90|extern|             |      |     |        |
+jsegment            |0x0000905c|extern|             |      |     |        |
+jtexture            |0x00007818|extern|             |      |     |        |
+kbdchar             |0x00005e30|extern|             |      |     |        |
+kbdstatu            |0x0071a5cc|extern|             |      |     |        |
+kchkchar            |0x00006304|extern|             |      |     |        |
+keystk              |0x0071d0c0|extern|             |0x0190|     |        |
+keytab              |0x0000a2d4|extern|             |      |     |        |
+keytabse            |0x000066a8|extern|             |      |     |        |
+kgetc               |0x000064b0|extern|             |      |     |        |
+kpready             |0x00005fa8|extern|             |      |     |        |
+layerop             |0x0000372c|extern|             |      |     |        |
+lit_draw            |0x00003440|extern|             |      |     |        |
+load                |0x00001924|extern|             |      |     |        |
+lr                  |0x00719568|extern|             |      |     |        |
+ls_bss              |0x0000b334|extern|             |      |     |        |
+maxtemp             |0x00719020|extern|             |      |     |        |
+mousetes            |0x00002dc8|extern|             |      |     |        |
+msvidstk            |0x0071d250|extern|             |0x0190|     |        |
+muxdir              |0x0071a5c0|extern|             |      |     |        |
+newquad             |0x000049ec|extern|             |      |     |        |
+nextlong            |0x0071b0c8|extern|             |      |     |        |
+num_msg             |0x00006bec|extern|             |      |     |        |
+num_setu            |0x00006cf0|extern|             |      |     |        |
+numlockt            |0x0000a364|extern|             |      |     |        |
+obs                 |0x0071950c|extern|             |      |     |        |
+old                 |0x00719594|extern|             |      |     |        |
+oldx                |0x0071903c|extern|             |      |     |        |
+oldy                |0x00719040|extern|             |      |     |        |
+outstk              |0x0071cda0|extern|             |0x0190|     |        |
+own                 |0x00005354|extern|             |      |     |        |
+pfkey               |0x00005398|extern|             |      |     |        |
+pio_mse             |0x000032e4|extern|             |      |     |        |
+piohstk             |0x0071cf30|extern|             |0x0190|     |        |
+piolstk             |0x0071d3e0|extern|             |0x0190|     |        |
+point               |0x0000756c|extern|             |      |     |        |
+proc                |0x00000084|extern|             |      |     |        |
+procstk             |0x0071c8f0|extern|             |0x0190|     |        |
+qputstr             |0x00005264|extern|             |      |     |        |
+ram                 |0x00001e1c|extern|             |      |     |        |
+ramflag             |0x0071901c|extern|             |      |     |        |
+rcvchar             |0x00004748|extern|             |      |     |        |
+rectf               |0x000077f0|extern|             |      |     |        |
+remote              |0x00719008|extern|             |      |     |        |
+reppcb              |0x00001d0c|extern|             |      |     |        |
+reset               |0x00000080|extern|             |      |     |        |
+reset_pc            |0x00009d04|extern|             |      |     |        |
+rexcep_t            |0x0071c320|extern|             |      |     |        |
+rhost_pc            |0x0071c0f0|extern|             |      |     |        |
+rint_pcb            |0x0071c2d0|extern|             |      |     |        |
+rkey_pcb            |0x0071c1e0|extern|             |      |     |        |
+rmain_pc            |0x0071c3a0|extern|             |      |     |        |
+rmsvid_p            |0x0071c230|extern|             |      |     |        |
+rom                 |0x00001d38|extern|             |      |     |        |
+rout_pcb            |0x0071c140|extern|             |      |     |        |
+rpioh_pc            |0x0071c190|extern|             |      |     |        |
+rpiol_pc            |0x0071c280|extern|             |      |     |        |
+rproc_pc            |0x0071c050|extern|             |      |     |        |
+rpt_time            |0x00719014|extern|             |      |     |        |
+rptcount            |0x0071a5c8|extern|             |      |     |        |
+rreset_p            |0x0071c000|extern|             |      |     |        |
+rstack_p            |0x0071c0a0|extern|             |      |     |        |
+savecur             |0x00719004|extern|             |      |     |        |
+scroll              |0x0000119c|extern|             |      |     |        |
+segment             |0x00009094|extern|             |      |     |        |
+sendbrea            |0x000047f4|extern|             |      |     |        |
+sendchar            |0x00004774|extern|             |      |     |        |
+setbram             |0x000034e4|extern|             |      |     |        |
+setup_sp            |0x0071a5d8|extern|             |      |     |        |
+setup_sw            |0x0000a400|extern|             |      |     |        |
+setupdis            |0x0000670c|extern|             |      |     |        |
+spl4                |0x000018f9|extern|             |      |     |        |
+spl5                |0x00001905|extern|             |      |     |        |
+spl6                |0x00001905|extern|             |      |     |        |
+spl7                |0x00001905|extern|             |      |     |        |
+stack               |0x00000088|extern|             |      |     |        |
+stackstk            |0x0071ca80|extern|             |0x0190|     |        |
+stdcurta            |0x0000a208|extern|             |      |     |        |
+sthost_i            |0x00002a18|extern|             |      |     |        |
+stkey_in            |0x000030fc|extern|             |      |     |        |
+stmsvid_            |0x00002f3c|extern|             |      |     |        |
+stout_in            |0x000029e4|extern|             |      |     |        |
+strdelch            |0x00005da8|extern|             |      |     |        |
+strlen              |0x00009c5c|extern|             |      |     |        |
+strstk              |0x0071d570|extern|             |0x0190|     |        |
+ststk               |0x0071c4f0|extern|             |0x0400|     |        |
+t_delaye            |0x00002a38|extern|             |      |     |        |
+t_kbd               |0x00002b8c|extern|             |      |     |        |
+t_shade             |0x000033a4|extern|             |      |     |        |
+test32              |0x00001a54|extern|             |      |     |        |
+texture             |0x00008c68|extern|             |      |     |        |
+topbits             |0x0000b22c|extern|             |      |     |        |
+tready              |0x00002990|extern|             |      |     |        |
+trysend             |0x00005f4c|extern|             |      |     |        |
+tstdcd              |0x00004848|extern|             |      |     |        |
+type                |0x00003110|extern|             |      |     |        |
+ublocked            |0x00719010|extern|             |      |     |        |
+ud                  |0x00719564|extern|             |      |     |        |
+usercurt            |0x00719528|extern|             |      |     |        |
+val_baud            |0x0000a39c|extern|             |      |     |        |
+val_dupl            |0x0000a3c8|extern|             |      |     |        |
+val_indx            |0x0000a3e0|extern|             |      |     |        |
+val_keyt            |0x0000a3d0|extern|             |      |     |        |
+val_maxe            |0x0000a3f8|extern|             |      |     |        |
+val_newl            |0x0000a3c0|extern|             |      |     |        |
+val_retk            |0x0000a3b4|extern|             |      |     |        |
+val_scre            |0x0000a3d8|extern|             |      |     |        |
+ver_int             |0x00009c90|extern|             |      |     |        |
+ver_str             |0x00009c8c|extern|             |      |     |        |
+wait                |0x00005380|extern|             |      |     |        |
+walk_x              |0x00002a54|extern|             |      |     |        |
+walk_x1             |0x00002b44|extern|             |      |     |        |
+x0                  |0x0071b0e4|extern|             |      |     |        |
+xdata               |0x0071956c|extern|             |      |     |        |
+xm                  |0x00719044|extern|             |      |     |        |
+y0                  |0x0071b0e8|extern|             |      |     |        |
+ydata               |0x00719574|extern|             |      |     |        |
+ym                  |0x00719048|extern|             |      |     |        |
+proc_pcb            |0x0071c050|extern|      int[20]|0x0050|     |.pcbs   |
+stack_pc            |0x0071c0a0|extern|      int[20]|0x0050|     |.pcbs   |
+host_pcb            |0x0071c0f0|extern|      int[20]|0x0050|     |.pcbs   |
+out_pcb             |0x0071c140|extern|      int[20]|0x0050|     |.pcbs   |
+pioh_pcb            |0x0071c190|extern|      int[20]|0x0050|     |.pcbs   |
+key_pcb             |0x0071c1e0|extern|      int[20]|0x0050|     |.pcbs   |
+msvid_pc            |0x0071c230|extern|      int[20]|0x0050|     |.pcbs   |
+piol_pcb            |0x0071c280|extern|      int[20]|0x0050|     |.pcbs   |
+int_pcb             |0x0071c2d0|extern|      int[20]|0x0050|     |.pcbs   |
+excep_ta            |0x0071c320|extern|      int[32]|0x0080|     |.pcbs   |
+main_pcb            |0x0071c3a0|extern|      int[20]|0x0050|     |.pcbs   |
+mainstk             |0x00722910|extern|     int[150]|0x0258|     |.bss    |
+pad_pad             |0x00722b68|extern|      int[42]|0x00a8|     |.bss    |
+end                 |0x00722c10|extern|             |      |     |        |

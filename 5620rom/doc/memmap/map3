@@ -1,0 +1,60 @@
+             
+
+             
+             
+
+
+			        RAM MAP
+               	                -------
+
+
+
+  address          
+           -------------------
+   700000  |                 |
+           |     screen      |
+           |     memory      |
+           .                 .
+           .                 .
+           .                 .
+           -------------------
+   719000  |                 |
+           |  romterm bss    |
+           |                 |
+           -------------------
+           |                 |
+           | libraries bss   |
+           |                 |
+           -------------------
+           |                 |
+           |      pad        |
+           |                 |
+           -------------------...-------------------...--------------------
+   71C000  |                 |   |                 |   |                  |
+           |  romterm pcbs   |   |  layersys pcbs  |   | stand-alone pcbs |
+           |   and stacks    |   |    and stacks   |   |    and stacks    |
+           |                 |   |                 |   |                  |
+           -------------------...-------------------...--------------------
+   71D700  |                 |   |                 |   |                  |
+           |    unused       |   |   layersys      |   |   mainstk and    |
+           |                 |   |  vector table   |   |   memory for     |
+           |                 |   |                 |   |   stand-alone    |
+           |                 |   -------------------   |   program code   |
+           |                 |   |                 |   |                  |
+           |                 |   | layersys bss    |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   -------------------   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |   windowproc    |   |                  |
+           |                 |   |     patch       |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   -------------------   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |   Free_RAM      |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |                 |   |                  |
+           |                 |   |                 |   |                  |
+
+            Resident Terminal          Layers              Stand-Alone

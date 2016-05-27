@@ -1,0 +1,8 @@
+.nr Pt 1
+.SA 1
+.ds HF 3 3 3 3
+.nr Ej 1
+.BS
+.ce 1
+.B "AT&T TELETYPE CORPORATION"
+.BE

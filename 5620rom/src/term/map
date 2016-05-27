@@ -1,0 +1,22 @@
+MEMORY {
+	$rom$(RXI):	org=0x0,	len=0x20000
+	$ram$:		org=0x700000,	len=0x40000
+}
+
+SECTIONS {
+	
+	.vecs 0x0 : { lowmem.o } >$rom$
+    	GROUP 0x200 : {
+		.vtab : { vector.o(.data) }
+		.text : {}
+		.data  : {}
+		.linkage : { link.o(.bss) }
+    		} >$rom$
+	GROUP 0x719000 : {
+		.bss : {vitty.o(.bss)}
+    		} >$ram$
+	.reserved 0x71bff0 : { . += 0x10; }
+	GROUP 0x71c000 : {
+		.bss_stk : {pcbs.o(.bss)}
+		} >$ram$
+}

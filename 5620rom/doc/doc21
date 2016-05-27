@@ -1,0 +1,394 @@
+.H 2 "FIRMWARE VECTOR TABLES"
+.P
+There are two vector tables in the DMD firmware. These are the
+layersys vector table, \fBSys\fR, and the stand-alone vector table \fBFirm\fR.
+The file $layersys/vector_tab contains Sys. This is broken into two files,
+$layersys/rvector.s and $layersys/vector.s by $layersys/makefile.
+$layersys/rvector.s resides in eprom and is copied into the ram where
+the vector.s table is link-loaded when layers is booted. The file
+$term/vector.s contains Firm.
+.P
+So, what is a vector table? The vector tables contain addresses of
+functions and global variables. They are used as a means of indirectly
+calling these functions and indirectly accessing these global data structures.
+One reason for wanting to do this is to obtain an independence between
+host software and terminal firmware. There is an additional reason
+for the layersys vector table, which is what will be discussed next.
+.H 3 "THE LAYERSYS PATCH MECHANISM"
+.P
+Calls between layersys functions are done indirectly through
+the layersys vector table. The file $layersys/vector.h contains
+C pre-processor statements to translate these function calls into
+indirect calls through a fixed address in Sys using the C-language
+indirect function call mechanism. The advantage of doing this is
+that if the address of a particular function in Sys is changed, a
+different version of that routine will be called. This different
+version can be downloaded from the host. There are three reasons why
+this could be desirable:
+.BL
+.LI
+If a bug is found in a layersys routine, a fixed version of this routine could
+be distributed more easily than installing new eproms.
+.LI
+It can be a powerful debugging tool on eprom based terminals. It could
+save having to recompile all the firmware and downloading to a ram
+based terminal in order to test out a bug fix.
+.LI
+It can allow the sophisticated application developer to modify chosen
+layersys routines to their purposes without creating the necessity
+of installing special eproms. An example of this could be that someone
+would want to use a different default windowproc to change the default
+terminal characteristics. They could create a patch file which is
+downloaded when layers is booted.
+.LE
+.P
+Not every function that layersys calls actually goes through
+the vector table. The notable exception is most library routines. The
+reason for this is that it is assumed that library routines are
+more stable, and it is less likely that there would be
+a need to change them. The only way to patch them would be to patch
+the routines that call them and have these routines link in the
+new copy of the library routine.
+.P
+There are two types of patches that can be done, rom dependent and
+rom independent. Rom dependent implies that the patch will only work
+with one version of firmware - it will stop working when firmware
+is recompiled. Rom independent patches can be used with different
+firmware versions, but are harder to construct.
+.P
+The directory $layersys/rdpatch contains some tools for creating rom
+dependent patches. In particular, it will generate a file lrom.s
+with absolute addresses for all symbols in both layersys and romterm.
+This is similar to the trom.s file that layersys used for absolute
+addresses from romterm.
+.P
+The procedure for doing rom dependent patches is as follows:\*F
+.FS
+See also the README file in the rdpatch directory.
+.FE
+.AL 1
+.LI
+Make  the change to  the layersys module (say \fImod\fR) and create a
+file containing the source for only the replacement module in
+rdpatch/\fImod\fR.c. It is possible to share RAM-resident (BSS)
+variables between the replacement module and other ROM-resident
+modules; in most cases, this is what is wanted. Change global variable
+declarations in \fImod.c\fR to "extern"s; this will resolve the
+references to the current BSS copies of the variables, as declared by
+the ROM-resident version of mod.
+.LI
+The patch must change the address of the routine being patched in
+Sys. This can be done as follows. A new main pcb must be downloaded
+with the patch. This could be done with an m32ld(dmd) map file
+which locates the pcb at the proper absolute address. 
+The new main pcb points to a modified version of the layersys startup
+routine, $layersys/pl.s, which patches both the addresses of the
+patched routines and the new address of Free_RAM (Sys[163]).
+.LI
+Edit the file "rdpatch/badname.f" to add a sed(1) command to delete
+the entry for mod from a m32nm(1) output listing.  This line
+will be of the form:
+.sp
+.ti 10
+.B "/^mod[ |]/d"
+.sp
+This prevents the layersys declaration of the module from being used in the
+vector table.  One such line is required for each global symbol in \fImod.c\fR
+which is to supersede the ROM-resident version.   If for some reason variables
+declared in \fImod.c\fR must be distinct from the variable originally defined
+by the ROM-resident copy, you must also add to badname.f entries like that above
+for each variable. 
+.LI
+Edit "rdpatch/makefile" and add "\fImod\fR.o" to the dependency list for
+.I layersys ,
+and add it to the  immediately following dmdcc(dmd) command line.  Add an 
+entry for "\fImod\fR.o" to the makefile showing its dependencies.
+.LI
+Type "make" in "rdpatch".  This should
+.AL a
+.LI
+compile your replacement module,
+.LI
+regenerate lrom.s and compile it,
+.LI
+link everything into a new patch file.
+.LE
+.LI
+Try out your replacement module by typing "layers ./'patch_file'".
+When it is debugged, the patch file can continue to be downloaded by
+specifying it's path on the layers command line, or could be installed
+in $DMD/lib/layersys/lsys."version_number" as described below.
+.LE
+.P
+To produce rom independent patches, the above procedure must be modified
+slightly. A lrom.s file must \fBnot\fR be used, rather, the sa.h
+stand-alone vector table preprocessor file must be used to cause vectoring
+through the stand-alone vector table. The stand-alone vector table
+is discussed further below.
+.H 3 "THE FIRMWARE VERSION 8;7;5 PATCH FILE"
+.P
+The layers environment can have a component not in eprom but
+down-loaded from the host.
+This other component
+contains a patch which is down-loaded to the terminal
+when layers is booted.
+This is used only for modifying layersys.
+There are two ways to load a host resident patch file into the
+terminal when booting layers:
+.AL
+.LI
+The layers program accepts a command line argument which specifies
+the file to be downloaded. So, layers can be booted by typing:
+.DS CB
+$ layers "patch_file"
+.DE
+.LI
+If no file name is specified, layers will attempt to load the file
+$DMD/lib/layersys/lsys."version_number"
+where "version_number" is the firmware version
+number which is displayed during keyboard requested selftest (keyboard
+requested selftest can be entered by pressing the SHIFT and SETUP keys at
+the same time in resident terminal). As stated above, the default
+load file for firmware version 8;7;5 is therefore 
+$DMD/lib/layersys/lsys.8;7;5
+.P
+The three fields in the version number 8;7;3 are defined as follows:
+.BL
+.LI
+The 8 identifies the terminal as a 5620. This field must not be changed.
+.LI
+The 7 identifies which firmware and hardware options are installed. This
+may be changed in the future.
+.LI
+The 3 identifies the firmware release. This will change as new versions
+of firmware are released.
+.LE
+.P
+If a load file is not specified and the proper lsys."version_number"
+file does not exist, layers will fail with an error
+message stating that the host portion of layers is missing.
+.LE
+.P
+When firmware is modified, it is desirable that the version number
+be changed to allow identification. The version string is defined
+by the string 
+.BI ver_str
+in the file $ROOT/src/term/vitty.c.  When the version number is
+changed, a new patch file must be installed. If version number is not
+changed, but firmware is modified it may still be necessary to install
+a new patch file. The patch code is loaded immediately following
+layersys bss. If layersys bss grows, a new patch file must be installed.
+To prevent the necessity of doing this for small firmware changes some
+padding has been added to layersys bss. This padding is located in the
+file $ROOT/src/xt/layersys/mainstk.c. If layersys bss grows, reduce
+the size of the
+.BI pad_pad
+array by the amount layersys bss has grown.
+
+.H 3 "VECTOR TABLES FOR HOST SOFTWARE AND FIRMWARE INDEPENDENCE"
+.P
+As stated in the beginning of this section, the layersys patch mechanism 
+is one of
+two reasons for firmware vector tables. In the above section we
+talked about how firmware modules can call ram resident modules.
+In this section we look at how ram resident application programs
+(stand-alone programs and programs downloaded to a layers window)
+can use vector tables to call firmware modules.
+By using the vector table, different versions of firmware will
+work with the same version on host software.
+.P
+The general idea of how this is accomplished is to fix the location
+of the vector tables to absolute memory locations. Once this is done,
+application programs can call firmware routines indirectly through
+the vector tables. This way, when firmware is recompiled, and addresses
+of functions and global variables change, the only thing which has
+to be updated is the vector tables. Since the vector tables are located
+in eprom (copied from eprom to ram for the layersys vector table)
+this is not a problem. Vector tables with proper addresses are 
+distributed within eprom, along with the romterm, layersys and
+libraries code.
+.P
+As mentioned above, there are two vector tables, one for stand-alone
+programs and one for layersys. The reason for this is that stand-alone
+programs are totally independent of layersys, so obviously they cannot
+use the layersys vector table. It does not exist in stand-alone mode.
+On the other hand, for the layersys patch mechanism to remain intact,
+the layersys vector table had to be copied into ram, so vectoring
+through the stand-alone vector table in eprom was not possible.
+It would have been possible to copy parts of the stand-alone vector
+table into ram to create the layersys vector table, rather than
+having a totally separate table. This would have saved a small amount of
+space in eprom, but would have caused problems because the
+stand-alone vector table is built with romterm, and layersys addresses
+are not known until layersys is compiled.
+.P
+The stand-alone vector table, Firm, will be discussed first.
+Firm should be used to call any ROM routine from a stand-alone
+download program.  In addition, references to firmware data
+structures should also be made indirectly through
+the vector table.
+.P
+The include file
+.B dmd.h
+will automatically include a file,
+.B sa.h
+when the program being compiled is targeted for the stand-alone environment
+(i.e.
+.B MPX
+is \fInot\fR defined by dmdcc(dmd)\*F).
+.FS
+Dmdcc(dmd) automatically defines
+the variable MPX with the cpp(1) command -DMPX when the -J option
+is not used. This means that the program is targeted to run in a layers
+window, as opposed to the -J option for programs targeted for the
+stand-alone environment.
+.FE
+.B Sa.h
+declares the names of the ROM-resident functions as macros that expand 
+into indirect calls to the ROM routine through the vector table.  The C
+preprocessor will substitute the macro expansion for later occurrences of
+the names of routines and data structures in the vector table.
+References to data structures are handled in the same way; the name of the
+structure is declared as a macro which expands into an indirect reference through
+the vector table which is then cast as a pointer to the type of the data structure,
+and starred to get the value.
+.P
+Consider the sample program below:
+.DS CB
+#include	<dmd.h>
+#include	<queue.h>
+
+main()
+{
+	qgetc(&RCVQUEUE);
+}
+.DE
+.P
+The preprocessor will translate the call to
+.B qgetc
+to the line shown below:
+.DS C NF
+(*((int (*)())((int *)0x200)[ 78]))(&(((struct clist  *)((int *)0x200)[ 146]))[0]);
+.DE
+.P
+The first part of this is the indirect call to 
+.B qgetc
+through vector table entry 78;\*F
+.FS
+The vector table begins at physical address 200 Hex.
+.FE
+the second is the indirect reference to 
+RCVQUEUE\*F
+.FS
+Note that RCVQUEUE is itself a defined name which expands to "queues[0]"; hence
+the final "[0]" near the end of the line.
+.FE
+(a ROM data structure) through vector table entry 146.
+The assembler code produced is shown below:
+.DS CB NF
+	addw3	&0,1096,%r0
+	pushw	%r0
+	call	&1,*824
+.DE
+Layersys is actually a very complex, special stand-alone program, but
+it is treated differently than other stand-alone programs
+by the vector table mechanism.
+Note that we are talking about layersys here, \fBnot\fR programs which
+are downloaded into a layers window.
+ROM-resident portions of
+layersys are permitted to circumvent the vector table and directly call
+other ROM-resident routines using above mentioned trom.o mechanism.
+Thus, if \fBMPX\fR is not defined but \fBMPXTERM\fR \fIis\fR, \fBsa.h\fR
+is not included.
+As discussed above in the section of the layersys patch mechanism,
+rom independent 
+patches to layersys are a somewhat different story; these
+can be thought of as stand-alone programs which must use \fItwo\fR vector tables --
+the layersys vector table (\fISys\fR) for accessing other layersys
+routines and the firmware table (\fIFirm\fR) for accessing ROM-resident routines
+not in Sys.  The label \fBMPXPATCH\fR is declared if a patch to the ROM
+.I layersys
+is being compiled.  In this case,
+.I sa.h
+is included by 
+.I vector.h
+after it  has declared all the macros corresponding to entries  in 
+.I Sys .
+.I Sa.h
+will only define macros  not already defined; the effect is to prefer the
+.I Sys
+definitions for modules in both tables.
+.P
+There are some pitfalls to the current vector table mechanism.
+Most C programmers will never realize that the vector table is being used for
+some of their library routine and data structure references; it happens 
+transparently as part of the compilation process.  However, assembly language
+programmers will have to explicitly code indirect references.
+.P
+A problem arises because of the nature of the C preprocessor.
+The pre-processor runs before the compiler,
+and the substitution of macro definitions for names is done without any sensitivity
+to the C context.  Some of the names in the vector table are common names
+(e.g. \fImouse\fR, \fIcursor\fR), and are also used elsewhere in the code in
+different C contexts.  For example, \fImouse\fR, which is a firmware data
+structure describing the current position of the mouse, is also used as a
+structure tag in a layersys data structure.  To C, these uses are distinct
+and pose no conflict.  But to the preprocessor, "mouse" is "mouse", regardless of
+context.  This can cause problems when compiling programs with the vector table.
+.P
+Programmers may re-use the names used in the vector table.  If they do not
+need to reference the ROM objects, the macro can be undefined.  For example,
+a user program which includes a function
+called "getnum" should include the following compiler control line in each
+source file with references to "getnum":
+.SP
+.ce 1
+#undef	getnum
+.SP
+This
+will delete the macro definition created by 
+.B sa.h
+and cause future references to "getnum" to be handled as a function call,
+not a macro invocation.  Note that the "#undef" command must occur \fIbefore\fR
+the first use (and \fIafter\fR the inclusion of
+.B dmd.h ).
+It also must occur in every source file in which "getnum" is referenced, as well
+as the source file in which the user "getnum" is declared.
+.P
+If programs must be able to use both the local name and the firmware name (as,
+for example, layersys must in the case mentioned above), things become a
+bit more complicated.  The actual macro substitution uses several preprocessor
+macros.  Two are shown in the figure below:
+.DS CB
+#define Smouse DCast(struct Mouse, 141)
+#define mouse Smouse
+.DE
+.P
+If "mouse" is undefined (with "#undef mouse"), the macro "Smouse" still exists
+to generate an indirect reference to the firmware data structure.  The programmer
+will have to find references which should be to the firmware data structure and
+cause these to use "S<name>" (in this example, "Smouse").
+.P
+The last topic to be discussed in this section is how programs which download
+to a layersys window use the layersys vector table, Sys, to achieve
+version independence. The layersys patch mechanism which was in place
+before version 8;7;5 had the fortunate effect of also allowing, with
+minor modifications, version independence for this operational mode.
+.P
+All programs which download to a layersys window only call functions
+in rom through the layersys vector table. This is accomplished as
+follows. When a program is compiled with dmdcc(dmd) without the
+-J option, the define MPX is passed to cpp(1) as described in
+the footnote above. The definition of MPX caused the include file
+dmd.h to include mpx.h\*F.
+.FS
+Mpx.h is not distributed on the firmware source tape because it is
+not part of firmware. It is located in the directory $DMD/include.
+.FE
+Mpx.h translates calls to rom routines into indirect calls through
+the layersys vector table.
+This is similar to the way stand-alone programs are pre-processed
+by sa.h. All that had to be done was to copy Sys from eprom (in
+earlier firmware versions Sys was downloaded from the host), and
+fix the address of Sys in ram to an absolute memory location which
+will not be changed in the future.

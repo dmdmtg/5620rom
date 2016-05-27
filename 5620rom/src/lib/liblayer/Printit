@@ -1,0 +1,18 @@
+echo "\n\n\n\n\n"
+banner liblayer listing
+date
+echo "\f\c"
+pr -f -n \
+dellayer.c \
+downback.c \
+layerop.c \
+lbitblt.c \
+lblt.c \
+lbox.c \
+lpoint.c \
+lrectf.c \
+lsegment.c \
+ltexture.c \
+newlayer.c \
+obsclean.c \
+upfront.c
