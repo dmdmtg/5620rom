@@ -135,7 +135,7 @@ $(COBJ): crtm.s
 	$(MCC) -c -g $<
 
 map:	$(DMDSRC)/term/romterm.map Map fixmap mapprog $(DMDSRC)/term/romterm.nm
-	fixmap head $(DMDSRC)/term/romterm.map
+	./fixmap head $(DMDSRC)/term/romterm.map
 
 Map:	makefile	
 	echo	"lpcbs.o"					     "\n" \
