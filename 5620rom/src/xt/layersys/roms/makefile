@@ -31,7 +31,7 @@ roms:	aconv ../combined
 	./aconv -w 4 -m 20000  -p 16 ../combined
 
 aconv:  aconv.c
-	cc -O -s aconv.c -o aconv
+	cc -O -s -I$(DMD)/include/sgs aconv.c -o aconv
 
 clean:
 	rm -f $(CLEAN)
